@@ -1,0 +1,15 @@
+package com.architechz.proyect.models;
+
+public enum Erole {
+	ROLE_CLIENTEADM,
+    ROLE_CLIENTEREPRE,
+    ROLE_ADMIN,
+    ROLE_GERENTEREG,
+    ROLE_GERENTEGEN,
+    ROLE_OPERADOR,
+    ROLE_MECANICO,
+    ROLE_CONDUCTOR,
+    ROLE_CONDUCTORVIS,
+    ROLE_PARTNER,
+    ROLE_AGENTE
+}
