@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 import com.architechz.project.models.*;
 
 @Repository
-public interface ConductorRepository extends JpaRepository<Conductor, Long> {
-    
+public interface ConductorRepository extends JpaRepository<Driver, Long> {
+
+    Boolean existsByUsername(String username);
+    String deleteByUsername(String username);
+    Driver findByUsername(String username);
 }

@@ -1,71 +1,117 @@
 package com.architechz.project.service.Operadores;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
-import com.architechz.project.dto.DtoLinkOperatorManager;
-import com.architechz.project.dto.DtoOperator;
-import com.architechz.project.models.Gerente;
-import com.architechz.project.models.Operador;
-import com.architechz.project.repository.GerenteRepository;
-import com.architechz.project.repository.OperadorRepository;
+import com.architechz.project.payload.RegisterRequests.OperadorRequest;
+import com.architechz.project.models.Operator;
+import com.architechz.project.models.User;
+import com.architechz.project.repository.*;
+import com.architechz.project.service.AuthService.*;
+import com.architechz.project.payload.request.SignupRequest;
 
+import com.architechz.project.repository.*;
+
+@Service
 public class OperadoresServiceImpl implements OperadoresService {
 
-    @Autowired
-    OperadorRepository operadorRepository;
 
     @Autowired
-    GerenteRepository gerenteRepository;
+    OperadorRepository OperadorRepository;
+
+    @Autowired
+    AuthService AuthService;
+
+    @Autowired
+    UserRepository UserRepository;
+
+
 
     @Override
-    public Operador getOperatorById(Long id) {
-        return operadorRepository.getReferenceById(id);
-    }
+    public String addUser(OperadorRequest user) {
 
-    @Override
-    public List<Operador> getAllOperators(){
-        return operadorRepository.findAll();
-    }
+        if (OperadorRepository.existsByUsername(user.getUsername())) {
+            return "Error: El correo "+ user.getUsername() + " ya existe en nuestras bases de datos!";
+          }else{
 
-    @Override
-    public List<DtoOperator> getInfoOperators() {
-        List<Operador> operators = this.getAllOperators();
-        List<DtoOperator> infoOperators = new ArrayList<>();
-        for(Operador operator : operators){
-            infoOperators.add(new DtoOperator(operator.getId(), operator.getName(), null, null, null));
-            // TO-DO Full data with relation of manager (that is not done already)
+
+        Set<String>rol = new HashSet<String>();
+        rol.add("ADMIN");
+
+            
+
+        try {
+
+        Operator operador = new Operator(user.getName(),user.getUsername(), user.getDocument(), user.getPhone(), "Operador", user.getLocation(), user.getManagerUsername());
+        OperadorRepository.save(operador);
+
+        SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), user.getPassword(), rol );
+        AuthService.addUser(user2);
+
+        } catch (Exception e) {
+            return e.toString(); 
         }
-        return infoOperators;
-    }
 
-    @Override
-    public void createOperator(Operador operator){
-        if(operadorRepository.findById(operator.getId()) == null){
-            operadorRepository.save(operator);
+        return "Operador guardado con exito";
         }
     }
 
-    @Override
-    public void deleteOperator(Long id) {
-        operadorRepository.deleteById(id);
-        // TO-DO Delete relations (that are not set by this time)
-    }
+
 
     @Override
-    public void linkOperatorManager(DtoLinkOperatorManager dtoLinkOperatorManager) {
-        Operador operator = operadorRepository.getReferenceById(dtoLinkOperatorManager.getIdOperator());
-        Gerente manager = gerenteRepository.getReferenceById(dtoLinkOperatorManager.getIdManager());
-        // TO-DO Link operator and manager (insert into list) (relations are not set)
+    public List<Operator> GetUser() {
+        return OperadorRepository.findAll();
     }
 
+
+
+    @Transactional
+    public String delUser(String username) {
+        System.out.println(username);
+        try {
+            
+           OperadorRepository.deleteByUsername(username);
+            UserRepository.deleteByUsername(username);
+            
+
+        } catch (Exception e) {
+            return e.toString();// TODO: handle exception
+        }
+
+
+        return "Operador " + username +" borrado con exito!";
+    }
+
+
+
     @Override
-    public void unlinkOperatorManager(DtoLinkOperatorManager dtoLinkOperatorManager) {
-        Operador operator = operadorRepository.getReferenceById(dtoLinkOperatorManager.getIdOperator());
-        Gerente manager = gerenteRepository.getReferenceById(dtoLinkOperatorManager.getIdManager());
-        // TO-DO Unlink operator and manager (remove from list) (relations are not set)
+    public String UpdateUser(Operator user) {
+        
+        try {
+            
+            Operator operador = OperadorRepository.findByUsername(user.getUsername());
+            
+            operador.setLocation(user.getLocation());
+            operador.setName(user.getName());
+            operador.setPhone(user.getPhone());
+            operador.setManagerUsername(user.getManagerUsername());
+            operador.setName(user.getName());
+            OperadorRepository.save(operador);
+
+
+        } catch (Exception e) {
+            return e.toString();// TODO: handle exception
+        }
+        
+        return "Usuario actualizado con exito!!";
     }
     
 }

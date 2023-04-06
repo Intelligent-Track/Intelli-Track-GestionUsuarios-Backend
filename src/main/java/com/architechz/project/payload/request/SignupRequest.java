@@ -14,11 +14,20 @@ public class SignupRequest {
 	@Email
 	private String username;
 
-    @NotBlank
+  @NotBlank
 	@Size(max = 120,min = 10)
 	private String password;
 
   private Set<String> role;
+
+
+  public SignupRequest(@NotBlank String name, @NotBlank @Size(max = 50) @Email String username,
+      @NotBlank @Size(max = 120, min = 10) String password, Set<String> role) {
+    this.name = name;
+    this.username = username;
+    this.password = password;
+    this.role = role;
+  }
 
   public String getUsername() {
     return username;
