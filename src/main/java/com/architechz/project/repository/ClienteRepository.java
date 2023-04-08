@@ -5,6 +5,10 @@ import org.springframework.stereotype.Repository;
 import com.architechz.project.models.*;
 
 @Repository
-public interface ClienteRepository extends JpaRepository<Cliente, Long> {
-    
+public interface ClienteRepository extends JpaRepository<Client, Long> {
+
+    Boolean existsByUsername(String username);
+    Boolean existsByNit(String Nit);
+    String deleteByUsername(String username);
+    Client findByUsername(String username);
 }

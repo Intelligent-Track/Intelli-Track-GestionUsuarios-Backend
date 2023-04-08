@@ -4,6 +4,9 @@ import org.springframework.stereotype.Repository;
 
 import com.architechz.project.models.*;
 @Repository
-public interface GerenteRepository extends JpaRepository<Gerente, Long> {
-    
+public interface GerenteRepository extends JpaRepository<Manager, Long> {
+
+    Boolean existsByUsername(String username);
+    String deleteByUsername(String username);
+    Manager findByUsername(String username);
 }

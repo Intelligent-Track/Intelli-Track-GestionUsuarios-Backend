@@ -6,7 +6,9 @@ import org.springframework.stereotype.Repository;
 import com.architechz.project.models.*;
 
 @Repository
-public interface OperadorRepository extends JpaRepository<Operador, Long> {
+public interface OperadorRepository extends JpaRepository<Operator, Long> {
 
-
+    Boolean existsByUsername(String username);
+    String deleteByUsername(String username);
+    Operator findByUsername(String username);
 }

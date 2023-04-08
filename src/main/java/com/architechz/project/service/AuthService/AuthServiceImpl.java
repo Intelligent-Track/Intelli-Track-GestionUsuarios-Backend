@@ -25,21 +25,6 @@ public class AuthServiceImpl implements AuthService {
   UserRepository userRepository;
 
   @Autowired
-  ClienteRepository ClienteRepository;
-
-  @Autowired
-  OperadorRepository OperadorRepository;
-
-  @Autowired
-  ConductorRepository ConductorRepository;
-
-  @Autowired
-  MecanicoRepository MecanicoRepository;
-
-  @Autowired
-  GerenteRepository GerenteRepository;
-
-  @Autowired
   RoleRepository roleRepository;
 
   @Autowired
@@ -71,15 +56,23 @@ public String addUser(SignupRequest userRequest) {
       Role userRole = roleRepository.findByName(Erole.ROLE_CLIENTEADM)
           .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
       roles.add(userRole);
-      Cliente cliente = new Cliente(userRequest.getUsername(),userRequest.getName());
-      ClienteRepository.save(cliente); //agregar el distintivo de que es ADM
+      /*Cliente cliente = new Cliente(userRequest.getUsername(),userRequest.getName());
+      ClienteRepository.save(cliente); //agregar el distintivo de que es ADM*/
     } else {
       strRoles.forEach(role -> {
         switch (role) {
+
         case "ADMIN":
           Role adminRole = roleRepository.findByName(Erole.ROLE_ADMIN)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(adminRole);
+
+          break;
+
+          case "CLI":
+          Role cli = roleRepository.findByName(Erole.ROLE_CLIENTEREPRE)
+              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          roles.add(cli);
 
           break;
         case "GGEN":
@@ -87,8 +80,8 @@ public String addUser(SignupRequest userRequest) {
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(modRole);
           // Create new client's account
-          Gerente Gerente = new Gerente(userRequest.getUsername(),userRequest.getName());
-          GerenteRepository.save(Gerente);
+          /*Gerente Gerente = new Gerente(userRequest.getUsername(),userRequest.getName());
+          GerenteRepository.save(Gerente);*/
           //llamada del servicio de correo
           break;
 
@@ -96,47 +89,54 @@ public String addUser(SignupRequest userRequest) {
           Role GREG = roleRepository.findByName(Erole.ROLE_GERENTEREG)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(GREG);
-          Gerente = new Gerente(userRequest.getUsername(),userRequest.getName()); //agregar el distintivo de que es regional
-          GerenteRepository.save(Gerente);
+          /*Gerente = new Gerente(userRequest.getUsername(),userRequest.getName()); //agregar el distintivo de que es regional
+          GerenteRepository.save(Gerente);*/
           //llamada del servicio de correo
           break;
+
           case "CON":
           Role CON = roleRepository.findByName(Erole.ROLE_CONDUCTOR)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(CON);
-          Conductor Conductor = new Conductor(userRequest.getUsername(),userRequest.getName());
-          ConductorRepository.save(Conductor);
+          /*Conductor Conductor = new Conductor(userRequest.getUsername(),userRequest.getName());
+          ConductorRepository.save(Conductor);*/
           //llamada del servicio de correo
           break;
+
           case "CONV":
           Role CONV = roleRepository.findByName(Erole.ROLE_CONDUCTORVIS)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(CONV);
-          Conductor = new Conductor(userRequest.getUsername(),userRequest.getName());
-          ConductorRepository.save(Conductor); //agregar el distintivo de que es invitado
+          /*Conductor = new Conductor(userRequest.getUsername(),userRequest.getName());
+          ConductorRepository.save(Conductor); //agregar el distintivo de que es invitado*/
           //llamada del servicio de correo
           break;
+
           case "MEC":
           Role MEC = roleRepository.findByName(Erole.ROLE_CONDUCTORVIS)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(MEC);
-          Mecanico Mecanico = new Mecanico(userRequest.getUsername(),userRequest.getName());
-          MecanicoRepository.save(Mecanico);
+         /*  Mecanico Mecanico = new Mecanico(userRequest.getUsername(),userRequest.getName());
+          MecanicoRepository.save(Mecanico);*/
           //llamada del servicio de correo
             ///////////////////////////////////////////////////////////////////////////////////////////////////////
           break;
+
           case "PART":
           Role PART = roleRepository.findByName(Erole.ROLE_CONDUCTORVIS)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(PART);
           //llamada del servicio de correo
           break;
-        default:
+
+        case "OPER":
           Role OPER = roleRepository.findByName(Erole.ROLE_OPERADOR)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
           roles.add(OPER);
-          Operador Operador = new Operador(userRequest.getUsername(),userRequest.getName());
-          OperadorRepository.save(Operador);
+          break;
+          
+          /*Operador Operador = new Operador(userRequest.getUsername(),userRequest.getName());
+          OperadorRepository.save(Operador);*/
           //llamada del servicio de correo
         }
       });

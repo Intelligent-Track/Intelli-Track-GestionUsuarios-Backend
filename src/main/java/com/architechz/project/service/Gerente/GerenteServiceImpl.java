@@ -1,38 +1,92 @@
 package com.architechz.project.service.Gerente;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.architechz.project.dto.DtoManager;
-import com.architechz.project.models.Gerente;
+import com.architechz.project.repository.*;
+import com.architechz.project.models.Manager;
+import com.architechz.project.payload.RegisterRequests.GerenteRequest;
 import com.architechz.project.repository.GerenteRepository;
+import com.architechz.project.service.AuthService.*;
+import com.architechz.project.payload.request.SignupRequest;
 
 @Service
 public class GerenteServiceImpl implements GerenteService {
 
+
     @Autowired
-    GerenteRepository gerenteRepository;
+    AuthService AuthService;
+
+    @Autowired
+    GerenteRepository GerenteRepository;
+
+    @Autowired
+    UserRepository UserRepository;
 
     @Override
-    public List<Gerente> getAllManagers(){
-        return gerenteRepository.findAll();
-    }
+    public String addUser(GerenteRequest user) {
+        if (GerenteRepository.existsByUsername(user.getUsername())) {
+            return "Error: El correo "+ user.getUsername() + " ya existe en nuestras bases de datos!";
+          }else{
+        Set<String>rol = new HashSet<>();
+        
 
-    @Override
-    public List<DtoManager> getInfoManagers(){
-        List<Gerente> managers = this.getAllManagers();
-        List<DtoManager> infoManagers = new ArrayList<>();
-        for(Gerente manager : managers){
-            DtoManager dtoManager = new DtoManager();
-            dtoManager.setId(manager.getId());
-            dtoManager.setFullName(manager.getName());
-            infoManagers.add(dtoManager);
-            // TO-DO Set all attributes
-        }
-        return infoManagers;
-    }
+        try {
+
+            if(user.getGerenteGeneral()){
+                rol.add("GGEN");
+                Manager gerente = new Manager(user.getName(), user.getUsername(), user.getDocument(), user.getPhone(), "Gerente General", user.getLocation(), user.getGerenteGeneral(), user.getManagerUsername());
+                GerenteRepository.save(gerente);
+            }else{
+                rol.add("GREG");
+                Manager gerente = new Manager(user.getName(), user.getUsername(), user.getDocument(), user.getPhone(), "Gerente Regional", user.getLocation(), user.getGerenteGeneral(), user.getManagerUsername());
+                GerenteRepository.save(gerente);
+            }
+
+            SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), user.getPassword(), rol );
+            AuthService.addUser(user2);
     
-}
+            } catch (Exception e) {
+                return e.toString(); 
+        }
+    
+            return "Gerente guardado con exito";
+    }
+
+    }
+
+    @Override
+    public List<Manager> GetUser() {
+        return GerenteRepository.findAll();
+    }
+
+    @Transactional
+    public String delUser(String username) {
+        System.out.println(username);
+        try {
+            
+            GerenteRepository.deleteByUsername(username);
+            UserRepository.deleteByUsername(username);
+
+
+        } catch (Exception e) {
+            return e.toString();// TODO: handle exception
+        }
+
+
+        return "Gerente " + username +" borrado con exito!";
+    }
+
+    @Override
+    public String UpdateUser(Manager user) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'UpdateUser'");
+    }
+
+    }
