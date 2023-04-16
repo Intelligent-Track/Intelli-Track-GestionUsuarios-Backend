@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(	name = "Conductores")
+@Table(	name = "Driver")
 public class Driver {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

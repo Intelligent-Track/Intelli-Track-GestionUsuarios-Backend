@@ -8,7 +8,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(	name = "Gerentes")
+@Table(	name = "Manager")
 public class Manager {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

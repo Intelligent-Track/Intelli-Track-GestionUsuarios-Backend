@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 
 @Entity
-@Table(	name = "operadores")
+@Table(	name = "operator")
 public class Operator {
 
     @Id

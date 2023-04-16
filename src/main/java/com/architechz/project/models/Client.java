@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(	name = "cliente")
+@Table(	name = "client")
 public class Client {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
