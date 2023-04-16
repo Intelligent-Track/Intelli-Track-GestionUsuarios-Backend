@@ -12,6 +12,7 @@ import com.architechz.project.service.EmailNotifications.EmailService;
 
 import net.bytebuddy.utility.RandomString;
 import com.architechz.project.models.PasswordRequests;
+import com.architechz.project.models.User;
 
 @Service
 public class ResetPasswordServiceImpl implements ResetPasswordService {
@@ -58,7 +59,8 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         
         try {
                        
-            //PasswordRequests passwordRequests = passwordRepository.getById(null);
+            PasswordRequests passwordRequests = passwordRepository.findByToken(Password.getToken());
+           // User toChange = userRepository.findByUsername(passwordRequests.getUsername());
 
         } catch (Exception e) {
            
