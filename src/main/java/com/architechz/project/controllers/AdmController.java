@@ -50,7 +50,7 @@ public class AdmController {
   /*   @Autowired
     OperadoresService OperadoresService;
     */
-///////////////////////////////////////////////////////Crear usuarios///////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////// Crear usuarios ///////////////////////////////////////////////////////////////
     @PostMapping("/OperatorCreate")
     public ResponseEntity<?> OperadorSignup(@Valid @RequestBody OperadorRequest operadorRequest) {
       return ResponseEntity.ok(new MessageResponse(OperadoresService.addUser(operadorRequest)));
@@ -70,7 +70,7 @@ public class AdmController {
     public ResponseEntity<?> GerenteSignup(@Valid @RequestBody GerenteRequest gerenteRequest) {
       return ResponseEntity.ok(new MessageResponse(GerenteService.addUser(gerenteRequest)));
     }
-///////////////////////////////////////////////////Obtener lista de empleados/////////////////////////////////////////////////////
+/////////////////////////////////////////////////// Obtener lista de empleados /////////////////////////////////////////////////////
     @GetMapping("/GetOperators")
     public ResponseEntity<?> GetOperador() {
       return new ResponseEntity<>(OperadoresService.GetUser(), HttpStatus.OK);
@@ -90,7 +90,7 @@ public class AdmController {
     public ResponseEntity<?> GetGerente() {
       return new ResponseEntity<>(GerenteService.GetUser(), HttpStatus.OK);
     }
-//////////////////////////////////////////////////Delete Usuarios/////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////// Delete Usuarios /////////////////////////////////////////////////////////////////
     @DeleteMapping("/DeleteOperator/{username}")
     public ResponseEntity<?> DelOperador(@PathVariable String username) {
       return ResponseEntity.ok(new MessageResponse(OperadoresService.delUser(username)));
@@ -110,7 +110,7 @@ public class AdmController {
     public ResponseEntity<?> DelGerente(@PathVariable String username) {
       return ResponseEntity.ok(new MessageResponse(GerenteService.delUser(username)));
     }
-/////////////////////////////////////////////////Edit Usarios SIN TERMINAR/////////////////////////////////////////////////////////
+///////////////////////////////////////////////// Edit Usarios ////////////////////////////////////////////////////////////////////
     @PutMapping("/UpdateOperator")
     public ResponseEntity<?> UpdtOperador(@Valid @RequestBody Operator operadorRequest) {
       return ResponseEntity.ok(new MessageResponse(OperadoresService.UpdateUser(operadorRequest)));

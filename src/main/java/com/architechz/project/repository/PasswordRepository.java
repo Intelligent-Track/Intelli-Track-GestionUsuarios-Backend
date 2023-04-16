@@ -5,8 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.architechz.project.models.PasswordRequests;
 
+@Repository
 public interface PasswordRepository extends JpaRepository<PasswordRequests, Long> {
     
-    
+    PasswordRequests findByToken (String token);
 
 }
