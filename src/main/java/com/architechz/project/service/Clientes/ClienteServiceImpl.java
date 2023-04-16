@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.architechz.project.models.Client;
-import com.architechz.project.payload.InsertionRequests.ClienteRequest;
+import com.architechz.project.payload.RegisterRequests.ClienteRequest;
 import com.architechz.project.payload.request.SignupRequest;
 import com.architechz.project.repository.ClienteRepository;
 import com.architechz.project.repository.UserRepository;
@@ -21,19 +21,19 @@ public class ClienteServiceImpl implements ClienteService {
     AuthService AuthService;
 
     @Autowired
-    ClienteRepository ClienteRepository;
+    ClienteRepository clienteRepository;
 
     @Autowired
     UserRepository UserRepository;
 
     @Override
     public String addUser(ClienteRequest user) {
-        if (ClienteRepository.existsByUsername(user.getUsername())) {
+        if (this.clienteRepository.existsByUsername(user.getUsername())) {
 
             return "Error: El correo " + user.getUsername() + " ya existe en nuestras bases de datos!";
         } else {
 
-            if (ClienteRepository.existsByNit(user.getNit())) {
+            if (this.clienteRepository.existsByNit(user.getNit())) {
 
                 return "Error: El Nit " + user.getNit() + " ya existe en nuestras bases de datos!";
             } else {
@@ -47,13 +47,13 @@ public class ClienteServiceImpl implements ClienteService {
                         Client cliente = new Client(user.getName(), user.getUsername(), user.getDocument(),
                                 user.getPhone(), "Cliente ADM", user.getLocation(), user.getNit(),
                                 user.getCompanyName(), user.getAdm(), user.getManagerUsername());
-                        ClienteRepository.save(cliente);
+                        this.clienteRepository.save(cliente);
                     } else {
                         rol.add("CLI");
                         Client cliente = new Client(user.getName(), user.getUsername(), user.getDocument(),
                                 user.getPhone(), "Cliente ADM", user.getLocation(), user.getNit(),
                                 user.getCompanyName(), user.getAdm(), user.getManagerUsername());
-                        ClienteRepository.save(cliente);
+                        this.clienteRepository.save(cliente);
                     }
 
                     SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), user.getPassword(),
@@ -70,15 +70,20 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public List<Client> GetUser() {
-        return ClienteRepository.findAll();
+    public List<Client> getUser() {
+        return this.clienteRepository.findAll();
     }
 
     @Override
-    public String delUser(String username) {
+    public Client findById(Long id) {
+        return this.clienteRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public String deleteUser(String username) {
         try {
 
-            ClienteRepository.deleteByUsername(username);
+            this.clienteRepository.deleteByUsername(username);
             UserRepository.deleteByUsername(username);
 
         } catch (Exception e) {
@@ -91,7 +96,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public String updateClient(Client client) {
         try {
-            Client clientFound = this.ClienteRepository.findById(client.getId()).orElseThrow();
+            Client clientFound = this.clienteRepository.findById(client.getId()).orElseThrow();
             clientFound.setAdm(client.getAdm());
             clientFound.setCompanyName(client.getCompanyName());
             clientFound.setDocument(client.getDocument());
@@ -102,7 +107,7 @@ public class ClienteServiceImpl implements ClienteService {
             clientFound.setNit(client.getNit());
             clientFound.setPhone(client.getPhone());
             clientFound.setUsername(client.getUsername());
-            this.ClienteRepository.save(clientFound);
+            this.clienteRepository.save(clientFound);
             return "Cliente actualizado correctamente";
         } catch (Exception e) {
             return e.toString();

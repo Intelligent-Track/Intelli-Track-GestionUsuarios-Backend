@@ -7,18 +7,13 @@ import java.util.Set;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.architechz.project.payload.RegisterRequests.OperadorRequest;
 import com.architechz.project.models.Operator;
-import com.architechz.project.models.User;
 import com.architechz.project.repository.*;
 import com.architechz.project.service.AuthService.*;
 import com.architechz.project.payload.request.SignupRequest;
-
-import com.architechz.project.repository.*;
 
 @Service
 public class OperadoresServiceImpl implements OperadoresService {

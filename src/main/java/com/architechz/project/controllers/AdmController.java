@@ -1,18 +1,10 @@
 package com.architechz.project.controllers;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,17 +19,11 @@ import com.architechz.project.models.Driver;
 import com.architechz.project.models.Manager;
 import com.architechz.project.models.Mecanic;
 import com.architechz.project.models.Operator;
-import com.architechz.project.payload.*;
 import com.architechz.project.payload.RegisterRequests.ConductorRequest;
 import com.architechz.project.payload.RegisterRequests.GerenteRequest;
 import com.architechz.project.payload.RegisterRequests.MecanicoRequest;
 import com.architechz.project.payload.RegisterRequests.OperadorRequest;
-import com.architechz.project.payload.response.JwtResponse;
 import com.architechz.project.payload.response.MessageResponse;
-import com.architechz.project.repository.RoleRepository;
-import com.architechz.project.repository.UserRepository;
-import com.architechz.project.security.jwt.JwtUtils;
-import com.architechz.project.security.services.UserDetailsImpl;
 import com.architechz.project.service.Conductores.*;
 import com.architechz.project.service.Gerente.*;
 import com.architechz.project.service.Mecanicos.*;

@@ -5,9 +5,11 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.architechz.project.models.Client;
@@ -22,8 +24,13 @@ public class ClienteController {
     @Autowired
     ClienteService clienteService;
 
+    @GetMapping("/searchClient/{id}")
+    public Client searchClient(@RequestParam("id") Long id) {
+      return this.clienteService.findById(id);
+    }
+
     @PutMapping("/updateClient")
-    public ResponseEntity<?> UpdateClient(@Valid @RequestBody Client clientRequest) {
+    public ResponseEntity<?> updateClient(@Valid @RequestBody Client clientRequest) {
       return ResponseEntity.ok(new MessageResponse(this.clienteService.updateClient(clientRequest)));
     }
     
