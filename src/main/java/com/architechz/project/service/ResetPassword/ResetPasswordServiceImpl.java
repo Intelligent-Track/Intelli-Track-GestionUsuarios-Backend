@@ -1,7 +1,6 @@
 package com.architechz.project.service.ResetPassword;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -39,8 +38,6 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
                 emailservice.ForgotPassword(Password.getUsername(),token);
                 
                 return ResponseEntity.ok("Correo enviado con exito al usuario "+ Password.getUsername());
-
-
             }else{
 
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body( "El usuario no existe en nuestras bases de datos");
