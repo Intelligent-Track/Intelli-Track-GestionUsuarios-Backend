@@ -69,6 +69,13 @@ public String addUser(SignupRequest userRequest) {
 
           break;
 
+          case "CLIADM":
+          Role cliAdm = roleRepository.findByName(Erole.ROLE_CLIENTEADM)
+              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          roles.add(cliAdm);
+
+          break;
+
           case "CLI":
           Role cli = roleRepository.findByName(Erole.ROLE_CLIENTEREPRE)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));

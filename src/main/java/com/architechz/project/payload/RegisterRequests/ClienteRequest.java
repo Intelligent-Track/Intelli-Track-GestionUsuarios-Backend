@@ -20,10 +20,8 @@ public class ClienteRequest {
 	
 	private Long phone;
 
-	@NotBlank
 	private String job;
 
-	@NotBlank
 	private String location;
 
 	
@@ -33,11 +31,10 @@ public class ClienteRequest {
 	private String companyName;
 	
 
-	private Boolean adm;
+	private Boolean adm=false;
 
 	@Size(max = 50)
 	@Email
-	@NotBlank
 	private String managerUsername;
 
     public String getName() {

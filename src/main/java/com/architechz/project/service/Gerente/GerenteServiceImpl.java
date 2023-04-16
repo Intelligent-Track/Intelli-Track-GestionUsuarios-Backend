@@ -92,8 +92,24 @@ public class GerenteServiceImpl implements GerenteService {
 
     @Override
     public String UpdateUser(Manager user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'UpdateUser'");
+       
+        try {
+            
+            Manager manager = GerenteRepository.findByUsername(user.getUsername());
+            
+            manager.setLocation(user.getLocation());
+            manager.setName(user.getName());
+            manager.setPhone(user.getPhone());
+            manager.setManagerUsername(user.getManagerUsername());
+            manager.setName(user.getName());
+            GerenteRepository.save(manager);
+
+
+        } catch (Exception e) {
+            return e.toString();// TODO: handle exception
+        }
+        
+        return "Usuario actualizado con exito!!";
     }
 
-    }
+}

@@ -20,6 +20,7 @@ import com.architechz.project.payload.Password.PasswordChange;
 
 import net.bytebuddy.utility.RandomString;
 
+@Service
 public class EmailServiceImpl implements EmailService{
 
     @Autowired

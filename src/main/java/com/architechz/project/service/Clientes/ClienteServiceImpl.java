@@ -49,13 +49,14 @@ public class ClienteServiceImpl implements ClienteService {
         
         try {
 
-            if(user.getAdm()){
-
+            if(!user.getAdm()){
+                
+                rol.add("CLIADM");
                 Client cliente = new Client(user.getName(), user.getUsername(), user.getDocument(), user.getPhone(), "Cliente ADM", user.getLocation(), user.getNit(), user.getCompanyName(), user.getAdm(), user.getManagerUsername());
                 ClienteRepository.save(cliente);
             }else{
                 rol.add("CLI");
-                Client cliente = new Client(user.getName(), user.getUsername(), user.getDocument(), user.getPhone(), "Cliente ADM", user.getLocation(), user.getNit(), user.getCompanyName(), user.getAdm(), user.getManagerUsername());
+                Client cliente = new Client(user.getName(), user.getUsername(), user.getDocument(), user.getPhone(), "Cliente Representante", user.getLocation(), user.getNit(), user.getCompanyName(), user.getAdm(), user.getManagerUsername());
                 ClienteRepository.save(cliente);
             }
             
@@ -67,7 +68,7 @@ public class ClienteServiceImpl implements ClienteService {
                 return e.toString(); 
         }
     
-            return "Gerente guardado con exito";
+            return "Bienvenido "+ user.getName() +" tu cuenta ha sido creada con el username: "+ user.getUsername();
     }
     }
 }
@@ -91,5 +92,29 @@ public class ClienteServiceImpl implements ClienteService {
 
 
         return "Cliente " + username +" borrado con exito!";
+    }
+
+    @Override
+    public String UpdateClient(Client user) {
+        
+        
+        try {
+            
+            Client client = ClienteRepository.findByUsername(user.getUsername());
+            
+            client.setLocation(user.getLocation());
+            client.setName(user.getName());
+            client.setPhone(user.getPhone());
+            client.setManagerUsername(user.getManagerUsername());
+            client.setName(user.getName());
+            ClienteRepository.save(client);
+
+
+        } catch (Exception e) {
+            return e.toString();// TODO: handle exception
+        }
+        
+        return "Usuario actualizado con exito!!";
+
     }
 }

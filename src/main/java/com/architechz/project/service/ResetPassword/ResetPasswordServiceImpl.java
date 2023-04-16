@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import com.architechz.project.payload.Password.PasswordChange;
 import com.architechz.project.repository.PasswordRepository;
@@ -13,7 +14,7 @@ import com.architechz.project.service.EmailNotifications.EmailService;
 import net.bytebuddy.utility.RandomString;
 import com.architechz.project.models.PasswordRequests;
 
-
+@Service
 public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     @Autowired
@@ -60,7 +61,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         
         try {
             
-            PasswordRequests passwordRequests = passwordRepository.getById(null);
+            //PasswordRequests passwordRequests = passwordRepository.getById(null);
 
 
 

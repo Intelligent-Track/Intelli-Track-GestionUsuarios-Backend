@@ -87,7 +87,23 @@ public class ConductoresServiceImpl implements ConductoresService {
 
     @Override
     public String UpdateUser(Driver user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'UpdateUser'");
+       
+        try {
+            
+            Driver driver = ConductorRepository.findByUsername(user.getUsername());
+            
+            driver.setLocation(user.getLocation());
+            driver.setName(user.getName());
+            driver.setPhone(user.getPhone());
+            driver.setManagerUsername(user.getManagerUsername());
+            driver.setName(user.getName());
+            ConductorRepository.save(driver);
+
+
+        } catch (Exception e) {
+            return e.toString();// TODO: handle exception
+        }
+        
+        return "Usuario actualizado con exito!!";
     }
 }

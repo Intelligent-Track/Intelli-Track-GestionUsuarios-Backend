@@ -11,4 +11,5 @@ public interface ClienteService {
     public abstract String addUser(ClienteRequest user);
     public abstract List<Client> GetUser();
     public abstract String delUser(String username);
+    public abstract String UpdateClient(Client user);
 }
