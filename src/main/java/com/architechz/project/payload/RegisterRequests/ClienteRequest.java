@@ -11,7 +11,6 @@ public class ClienteRequest {
 	@Email
 	private String username;
 
-    @NotBlank
 	@Size(max = 120,min = 10)
 	private String password;
 

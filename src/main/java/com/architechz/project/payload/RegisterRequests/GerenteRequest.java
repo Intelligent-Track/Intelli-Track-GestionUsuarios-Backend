@@ -4,7 +4,7 @@ import javax.validation.constraints.*;
 public class GerenteRequest {
     
     
-    @NotBlank
+
 	@Size(max = 120,min = 10)
 	private String password;
 

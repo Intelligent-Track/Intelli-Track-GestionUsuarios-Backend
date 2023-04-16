@@ -14,6 +14,9 @@ import com.architechz.project.payload.RegisterRequests.ConductorRequest;
 import com.architechz.project.repository.*;
 import com.architechz.project.models.Driver;
 import com.architechz.project.service.AuthService.*;
+
+import net.bytebuddy.utility.RandomString;
+
 import com.architechz.project.payload.request.SignupRequest;
 
 @Service
@@ -47,7 +50,9 @@ public class ConductoresServiceImpl implements ConductoresService {
                 ConductorRepository.save(conductor);
             }
 
-            SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), user.getPassword(), rol );
+            String token = RandomString.make(10);
+
+            SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), token, rol );
             AuthService.addUser(user2);
     
             } catch (Exception e) {

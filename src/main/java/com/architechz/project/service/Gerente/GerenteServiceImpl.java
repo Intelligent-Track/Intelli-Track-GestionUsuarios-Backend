@@ -14,6 +14,9 @@ import com.architechz.project.models.Manager;
 import com.architechz.project.payload.RegisterRequests.GerenteRequest;
 import com.architechz.project.repository.GerenteRepository;
 import com.architechz.project.service.AuthService.*;
+
+import net.bytebuddy.utility.RandomString;
+
 import com.architechz.project.payload.request.SignupRequest;
 
 @Service
@@ -49,7 +52,11 @@ public class GerenteServiceImpl implements GerenteService {
                 GerenteRepository.save(gerente);
             }
 
-            SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), user.getPassword(), rol );
+            
+            String token = RandomString.make(10);
+
+
+            SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), token, rol );
             AuthService.addUser(user2);
     
             } catch (Exception e) {

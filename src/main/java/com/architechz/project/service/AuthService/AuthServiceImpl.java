@@ -143,7 +143,13 @@ public String addUser(SignupRequest userRequest) {
     }
 
     user.setRoles(roles);
+
+    ///////////////////////////////////////////////Salvar user and mandar correo//////////////////////////////////////////////////////////////
     userRepository.save(user);
+
+
+
+
     return "Bienvenido, "+ userRequest.getName() +", fuiste registrado exisitosamente con el correo "+ userRequest.getUsername()+" lo cual usuaras para tu loggin!";
 
 }  
