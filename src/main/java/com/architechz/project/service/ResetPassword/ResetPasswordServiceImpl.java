@@ -57,20 +57,11 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
         
         
         try {
-            
-            
+                       
             //PasswordRequests passwordRequests = passwordRepository.getById(null);
-
-
-
 
         } catch (Exception e) {
            
-
-
-
-
-
 
         }
         
