@@ -13,6 +13,9 @@ import com.architechz.project.payload.RegisterRequests.OperadorRequest;
 import com.architechz.project.models.Operator;
 import com.architechz.project.repository.*;
 import com.architechz.project.service.AuthService.*;
+
+import net.bytebuddy.utility.RandomString;
+
 import com.architechz.project.payload.request.SignupRequest;
 
 @Service
@@ -48,7 +51,13 @@ public class OperadoresServiceImpl implements OperadoresService {
         Operator operador = new Operator(user.getName(),user.getUsername(), user.getDocument(), user.getPhone(), "Operador", user.getLocation(), user.getManagerUsername());
         OperadorRepository.save(operador);
 
-        SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), user.getPassword(), rol );
+        ////////
+
+        String token = RandomString.make(10);
+
+        ///////
+
+        SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), token, rol );
         AuthService.addUser(user2);
 
         } catch (Exception e) {

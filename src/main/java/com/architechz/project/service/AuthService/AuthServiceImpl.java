@@ -69,6 +69,13 @@ public String addUser(SignupRequest userRequest) {
 
           break;
 
+          case "CLIADM":
+          Role cliAdm = roleRepository.findByName(Erole.ROLE_CLIENTEADM)
+              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          roles.add(cliAdm);
+
+          break;
+
           case "CLI":
           Role cli = roleRepository.findByName(Erole.ROLE_CLIENTEREPRE)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -143,7 +150,13 @@ public String addUser(SignupRequest userRequest) {
     }
 
     user.setRoles(roles);
+
+    ///////////////////////////////////////////////Salvar user and mandar correo//////////////////////////////////////////////////////////////
     userRepository.save(user);
+
+
+
+
     return "Bienvenido, "+ userRequest.getName() +", fuiste registrado exisitosamente con el correo "+ userRequest.getUsername()+" lo cual usuaras para tu loggin!";
 
 }  

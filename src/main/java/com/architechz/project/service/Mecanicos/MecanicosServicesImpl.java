@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import com.architechz.project.payload.RegisterRequests.MecanicoRequest;
 import com.architechz.project.models.Mecanic;
 import com.architechz.project.service.AuthService.*;
+
+import net.bytebuddy.utility.RandomString;
+
 import com.architechz.project.payload.request.SignupRequest;
 
 import com.architechz.project.repository.*;
@@ -40,7 +43,11 @@ public class MecanicosServicesImpl implements MecanicosService {
             Mecanic mecanico = new Mecanic(user.getName(), user.getUsername(), user.getDocument(), user.getPhone(), "Mecanico", user.getLocation(), user.getManagerUsername());
             MecanicoRepository.save(mecanico);
     
-            SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), user.getPassword(), rol );
+
+            String token = RandomString.make(10);
+
+
+            SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), token, rol );
             AuthService.addUser(user2);
     
             } catch (Exception e) {

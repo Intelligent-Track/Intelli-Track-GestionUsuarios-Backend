@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.architechz.project.payload.Password.PasswordChange;
 import com.architechz.project.payload.request.LoginRequest;
 import com.architechz.project.payload.request.SignupRequest;
 import com.architechz.project.payload.response.JwtResponse;
@@ -26,6 +27,7 @@ import com.architechz.project.repository.UserRepository;
 import com.architechz.project.security.jwt.JwtUtils;
 import com.architechz.project.security.services.UserDetailsImpl;
 import com.architechz.project.service.AuthService.AuthService;
+import com.architechz.project.service.ResetPassword.ResetPasswordService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -48,6 +50,9 @@ public class AuthController {
 
   @Autowired
   AuthService authService;
+
+  @Autowired
+  ResetPasswordService resetPasswordService;
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -74,4 +79,15 @@ public class AuthController {
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     return ResponseEntity.ok(new MessageResponse(authService.addUser(signUpRequest)));
   }
+
+  @PostMapping("/forgotPassword")
+  public ResponseEntity<?> ForgotPassword(@Valid @RequestBody PasswordChange password) {
+    return ResponseEntity.ok().body(resetPasswordService.PasswordUser(password));
+  }
+
+  @PostMapping("/ResetPassword")
+  public ResponseEntity<?> ResetPassword(@Valid @RequestBody PasswordChange password) {
+    return ResponseEntity.ok().body(resetPasswordService.ResetUser(password));
+  }
+
 }

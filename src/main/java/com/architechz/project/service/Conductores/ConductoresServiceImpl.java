@@ -14,6 +14,9 @@ import com.architechz.project.payload.RegisterRequests.ConductorRequest;
 import com.architechz.project.repository.*;
 import com.architechz.project.models.Driver;
 import com.architechz.project.service.AuthService.*;
+
+import net.bytebuddy.utility.RandomString;
+
 import com.architechz.project.payload.request.SignupRequest;
 
 @Service
@@ -47,7 +50,9 @@ public class ConductoresServiceImpl implements ConductoresService {
                 ConductorRepository.save(conductor);
             }
 
-            SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), user.getPassword(), rol );
+            String token = RandomString.make(10);
+
+            SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), token, rol );
             AuthService.addUser(user2);
     
             } catch (Exception e) {
@@ -82,7 +87,23 @@ public class ConductoresServiceImpl implements ConductoresService {
 
     @Override
     public String UpdateUser(Driver user) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'UpdateUser'");
+       
+        try {
+            
+            Driver driver = ConductorRepository.findByUsername(user.getUsername());
+            
+            driver.setLocation(user.getLocation());
+            driver.setName(user.getName());
+            driver.setPhone(user.getPhone());
+            driver.setManagerUsername(user.getManagerUsername());
+            driver.setName(user.getName());
+            ConductorRepository.save(driver);
+
+
+        } catch (Exception e) {
+            return e.toString();// TODO: handle exception
+        }
+        
+        return "Usuario actualizado con exito!!";
     }
 }

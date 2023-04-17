@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(	name = "cliente")
+@Table(	name = "client")
 public class Client {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +28,10 @@ public class Client {
 
 	private Long phone;
 
-	@NotBlank
+
 	private String job;
 
-	@NotBlank
+
 	private String location;
 
 	private String nit;
@@ -42,15 +42,14 @@ public class Client {
 
 	@Size(max = 50)
 	@Email
-	@NotBlank
 	private String managerUsername;
 
 	public Client() {
 	}
 
-	public Client( @NotBlank String name, @NotBlank @Size(max = 50) @Email String username,
-			@NotBlank Long document, @NotBlank Long phone, @NotBlank String job, @NotBlank String location, String nit,
-			String companyName, Boolean adm, @Size(max = 50) @Email @NotBlank String managerUsername) {
+	public Client(  String name,  @Size(max = 50) @Email String username,
+			 Long document,  Long phone,  String job,  String location, String nit,
+			String companyName, Boolean adm, @Size(max = 50) @Email String managerUsername) {
 		
 		this.name = name;
 		this.username = username;

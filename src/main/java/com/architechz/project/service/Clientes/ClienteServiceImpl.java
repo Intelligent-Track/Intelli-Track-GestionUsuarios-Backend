@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.architechz.project.models.Client;
 import com.architechz.project.payload.RegisterRequests.ClienteRequest;
-import com.architechz.project.payload.request.SignupRequest;
 import com.architechz.project.repository.ClienteRepository;
 import com.architechz.project.repository.UserRepository;
 import com.architechz.project.service.AuthService.AuthService;
@@ -40,47 +39,28 @@ public class ClienteServiceImpl implements ClienteService {
 
                 Set<String> rol = new HashSet<>();
 
-                try {
+                if (!user.getAdm()) {
 
-                    if (user.getAdm()) {
-
-                        Client cliente = new Client(user.getName(), user.getUsername(), user.getDocument(),
-                                user.getPhone(), "Cliente ADM", user.getLocation(), user.getNit(),
-                                user.getCompanyName(), user.getAdm(), user.getManagerUsername());
-                        this.clienteRepository.save(cliente);
-                    } else {
-                        rol.add("CLI");
-                        Client cliente = new Client(user.getName(), user.getUsername(), user.getDocument(),
-                                user.getPhone(), "Cliente ADM", user.getLocation(), user.getNit(),
-                                user.getCompanyName(), user.getAdm(), user.getManagerUsername());
-                        this.clienteRepository.save(cliente);
-                    }
-
-                    SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), user.getPassword(),
-                            rol);
-                    AuthService.addUser(user2);
-
-                } catch (Exception e) {
-                    return e.toString();
+                    rol.add("CLIADM");
+                    Client cliente = new Client(user.getName(), user.getUsername(), user.getDocument(), user.getPhone(),
+                            "Cliente ADM", user.getLocation(), user.getNit(), user.getCompanyName(), user.getAdm(),
+                            user.getManagerUsername());
+                    clienteRepository.save(cliente);
+                } else {
+                    rol.add("CLI");
+                    Client cliente = new Client(user.getName(), user.getUsername(), user.getDocument(), user.getPhone(),
+                            "Cliente Representante", user.getLocation(), user.getNit(), user.getCompanyName(),
+                            user.getAdm(), user.getManagerUsername());
+                    clienteRepository.save(cliente);
                 }
-
-                return "Gerente guardado con exito";
             }
+
+            return "Bienvenido " + user.getName() + " tu cuenta ha sido creada con el username: " + user.getUsername();
         }
     }
 
     @Override
-    public List<Client> getUser() {
-        return this.clienteRepository.findAll();
-    }
-
-    @Override
-    public Client findById(Long id) {
-        return this.clienteRepository.findById(id).orElseThrow();
-    }
-
-    @Override
-    public String deleteUser(String username) {
+    public String delUser(String username) {
         try {
 
             this.clienteRepository.deleteByUsername(username);
@@ -91,6 +71,16 @@ public class ClienteServiceImpl implements ClienteService {
         }
 
         return "Cliente " + username + " borrado con exito!";
+    }
+
+    @Override
+    public List<Client> getUser() {
+        return clienteRepository.findAll();
+    }
+
+    @Override
+    public Client findById(Long id) {
+        return clienteRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -113,5 +103,4 @@ public class ClienteServiceImpl implements ClienteService {
             return e.toString();
         }
     }
-
 }
