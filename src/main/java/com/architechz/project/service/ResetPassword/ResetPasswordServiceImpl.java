@@ -1,5 +1,9 @@
 package com.architechz.project.service.ResetPassword;
 
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,13 +58,20 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     }
 
     @Override
+    @Transactional
     public ResponseEntity<?> ResetUser(PasswordChange Password) {
         
         
         try {
                        
             PasswordRequests passwordRequests = passwordRepository.findByToken(Password.getToken());
-           // User toChange = userRepository.findByUsername(passwordRequests.getUsername());
+            Optional<User> user = userRepository.findByUsername(passwordRequests.getUsername());
+            if (user.isPresent()) {
+                User existingUser = user.get();
+                existingUser.setPassword(Password.getPassword());
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body( "Fue imposible cambiar la contrasena en este momento");// handle the case where the user does not exist
+            }
 
         } catch (Exception e) {
            
