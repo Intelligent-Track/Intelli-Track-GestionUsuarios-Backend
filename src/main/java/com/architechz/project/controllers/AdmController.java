@@ -1,6 +1,5 @@
 package com.architechz.project.controllers;
 
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;

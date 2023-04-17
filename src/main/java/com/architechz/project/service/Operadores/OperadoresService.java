@@ -2,7 +2,6 @@ package com.architechz.project.service.Operadores;
 
 import java.util.List;
 
-
 import com.architechz.project.models.Operator;
 import com.architechz.project.payload.RegisterRequests.*;
 
