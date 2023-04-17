@@ -1,2 +1,2 @@
 # Intelli-Track-GestionUsuarios-Backend
-Gestion Usuarion en springboot 2.7.3 con JWT y Logging
+Gestión de Usuarios desarrollado en Java Spring Boot v2.7.3. Con JWT y Logging. 
