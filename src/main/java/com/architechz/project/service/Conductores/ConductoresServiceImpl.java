@@ -65,6 +65,11 @@ public class ConductoresServiceImpl implements ConductoresService {
     }
 
     @Override
+    public Driver getByUsername(String username) {
+        return this.ConductorRepository.findByUsername(username);
+    }
+
+    @Override
     public List<Driver> GetUser() {
         return ConductorRepository.findAll();
     }

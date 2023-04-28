@@ -8,6 +8,7 @@ import com.architechz.project.payload.RegisterRequests.*;
 public interface ConductoresService {
     
     public String addUser(ConductorRequest user);
+    public Driver getByUsername(String username);
     public List<Driver> GetUser();
     public String delUser(String username);
     public String UpdateUser(Driver user);
