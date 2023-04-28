@@ -7,8 +7,10 @@ import com.architechz.project.payload.RegisterRequests.*;
 
 public interface ConductoresService {
     
-    public abstract String addUser(ConductorRequest user);
-    public abstract List<Driver> GetUser();
-    public abstract String delUser(String username);
-    public abstract String UpdateUser(Driver user);
+    public String addUser(ConductorRequest user);
+    public List<Driver> GetUser();
+    public String delUser(String username);
+    public String UpdateUser(Driver user);
+    public String updateDriverFiles(byte[] license, byte[] mecReview, Long id);
+
 }
