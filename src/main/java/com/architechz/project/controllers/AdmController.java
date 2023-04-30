@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.architechz.project.models.Driver;
 import com.architechz.project.models.Manager;
@@ -63,6 +65,15 @@ public class AdmController {
     @PostMapping("/DriverCreate")
     public ResponseEntity<?> ConductorSignup(@Valid @RequestBody ConductorRequest conductorRequest) {
       return ResponseEntity.ok(new MessageResponse(ConductoresService.addUser(conductorRequest)));
+    }
+
+    @PutMapping("/uploadDriverFiles")
+    public ResponseEntity<?> uploadDriverFiles(@RequestParam("licPhoto") MultipartFile license, @RequestParam("mecPhoto") MultipartFile mecReview, @RequestParam("id") Long id) {
+      try{
+        return ResponseEntity.ok(new MessageResponse(ConductoresService.updateDriverFiles(license.getBytes(), mecReview.getBytes(), id)));
+      } catch(Exception e) {
+        return new ResponseEntity<>(new MessageResponse(e.toString()), HttpStatus.BAD_REQUEST);
+      }
     }
 
     @PostMapping("/ManagerCreate")
