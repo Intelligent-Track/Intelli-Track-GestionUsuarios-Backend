@@ -17,4 +17,6 @@ public interface ClienteService {
 
     public String updateClient(Client client);
 
+    public  String generateRandomPassword(int len);
+
 }

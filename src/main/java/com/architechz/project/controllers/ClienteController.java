@@ -1,5 +1,7 @@
 package com.architechz.project.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.architechz.project.models.Client;
 
 import com.architechz.project.payload.response.MessageResponse;
+import com.architechz.project.repository.ClienteRepository;
 import com.architechz.project.service.Clientes.ClienteService;
 import com.architechz.project.payload.RegisterRequests.ClienteRequest;
 
@@ -29,6 +32,9 @@ public class ClienteController {
 
     @Autowired
     ClienteService clienteService;
+
+    @Autowired
+    ClienteRepository clienteRepository;
 
 
     @PostMapping("/ClientCreate")
@@ -51,5 +57,11 @@ public class ClienteController {
     public ResponseEntity<?> updateClient(@Valid @RequestBody Client clientRequest) {
       return ResponseEntity.ok(new MessageResponse(this.clienteService.updateClient(clientRequest)));
     }
-    
+
+    @GetMapping("/listAllClients")
+    public List<Client> allClients() {
+      return clienteRepository.findAll();
+    }
 }
+    
+

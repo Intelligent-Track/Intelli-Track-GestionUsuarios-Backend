@@ -73,5 +73,30 @@ public class EmailServiceImpl implements EmailService{
 
         }     
         
-    } 
+    }
+
+    @Override
+    public ResponseEntity<?> sentMessagge(String username, String messagge) {
+        
+        MimeMessage mimeMessage= javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper;
+
+        try {
+            System.out.println("llegue "+ username);
+            mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
+            mimeMessageHelper.setTo(username);
+            
+            mimeMessageHelper.setText(messagge);
+            javaMailSender.send(mimeMessage);
+            return ResponseEntity.ok("Mensaje enviado por correo con exito al usuario con correo: "+ username);     
+
+        } catch (Exception e) {
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body( "Fue imposible mandar el correo en este momento");
+
+        }     
+        
+    }
+    
+    
 }
