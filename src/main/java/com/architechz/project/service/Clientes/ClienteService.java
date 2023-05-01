@@ -9,6 +9,8 @@ public interface ClienteService {
 
     public abstract String addUser(ClienteRequest user);
 
+    public String addClient(Client client);
+
     public abstract String delUser(String username);
 
     public List<Client> getUser();

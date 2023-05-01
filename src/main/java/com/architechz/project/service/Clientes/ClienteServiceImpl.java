@@ -42,23 +42,24 @@ public class ClienteServiceImpl implements ClienteService {
                 Set<String> rol = new HashSet<>();
                 rol.add("CLI");
                 Client cliente = new Client(
-                    user.getName(), 
-                    user.getUsername(), 
-                    user.getDocument(), 
-                    user.getPhone(),
-                    "Cliente Representante", 
-                    user.getLocation(), 
-                    user.getNit(), 
-                    user.getCompanyName(),
-                    user.getAdm(), 
-                    user.getManagerUsername()
-                );
+                        user.getName(),
+                        user.getUsername(),
+                        user.getDocument(),
+                        user.getPhone(),
+                        "Cliente Representante",
+                        user.getLocation(),
+                        user.getNit(),
+                        user.getCompanyName(),
+                        user.getAdm(),
+                        user.getManagerUsername());
 
                 clienteRepository.save(cliente);
-                messagge= "Bienvenido, usted a sido registrado como un Cliente representante de la empresa" + user.getCompanyName();
-                emailService.sentMessagge(user.getUsername(),messagge);
-    
-                    return "El usuario con correo " + user.getUsername() + " fue añadido como Cliente Representante exitosamente!";
+                messagge = "Bienvenido, usted a sido registrado como un Cliente representante de la empresa"
+                        + user.getCompanyName();
+                emailService.sentMessagge(user.getUsername(), messagge);
+
+                return "El usuario con correo " + user.getUsername()
+                        + " fue añadido como Cliente Representante exitosamente!";
             } else {
 
                 Set<String> rol = new HashSet<>();
@@ -81,6 +82,26 @@ public class ClienteServiceImpl implements ClienteService {
 
             return "Bienvenido " + user.getName() + " tu cuenta ha sido creada con el username: " + user.getUsername();
         }
+    }
+
+    @Override
+    public String addClient(Client client) {
+        String messagge;
+        if (this.clienteRepository.existsByUsername(client.getUsername())) {
+
+            return "Error: El correo " + client.getUsername() + " ya existe en nuestras bases de datos!";
+        } else {
+
+            clienteRepository.save(client);
+            messagge = "Bienvenido, usted a sido registrado como un Cliente representante de la empresa"
+                    + client.getCompanyName();
+            // emailService.sentMessagge(client.getUsername(), messagge);
+
+            return "El usuario con correo " + client.getUsername()
+                    + " fue añadido como Cliente Representante exitosamente!";
+
+        }
+
     }
 
     @Override
