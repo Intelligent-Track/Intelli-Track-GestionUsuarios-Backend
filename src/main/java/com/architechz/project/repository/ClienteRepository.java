@@ -1,5 +1,7 @@
 package com.architechz.project.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +16,5 @@ public interface ClienteRepository extends JpaRepository<Client, Long> {
 
     String deleteByUsername(String username);
 
-    Client findByUsername(String username);
+    Optional<Client> findByUsername(String username);
 }

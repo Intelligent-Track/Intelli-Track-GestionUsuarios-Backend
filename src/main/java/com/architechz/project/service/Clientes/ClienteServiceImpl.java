@@ -91,11 +91,11 @@ public class ClienteServiceImpl implements ClienteService {
 
             return "Error: El correo " + client.getUsername() + " ya existe en nuestras bases de datos!";
         } else {
-
+            System.out.println(client.getId());
             clienteRepository.save(client);
             messagge = "Bienvenido, usted a sido registrado como un Cliente representante de la empresa"
                     + client.getCompanyName();
-            // emailService.sentMessagge(client.getUsername(), messagge);
+            emailService.sentMessagge(client.getUsername(), messagge);
 
             return "El usuario con correo " + client.getUsername()
                     + " fue añadido como Cliente Representante exitosamente!";
@@ -124,8 +124,8 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Client findById(Long id) {
-        return clienteRepository.findById(id).orElseThrow();
+    public Client findByUsername(String username) {
+        return clienteRepository.findByUsername(username).orElseThrow();
     }
 
     @Override

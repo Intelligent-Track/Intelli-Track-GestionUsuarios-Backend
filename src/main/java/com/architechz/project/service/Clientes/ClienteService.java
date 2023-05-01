@@ -15,7 +15,7 @@ public interface ClienteService {
 
     public List<Client> getUser();
 
-    public Client findById(Long id);
+    public Client findByUsername(String username);
 
     public String updateClient(Client client);
 
