@@ -9,11 +9,13 @@ public interface ClienteService {
 
     public abstract String addUser(ClienteRequest user);
 
+    public String addClient(Client client);
+
     public abstract String delUser(String username);
 
     public List<Client> getUser();
 
-    public Client findById(Long id);
+    public Client findByUsername(String username);
 
     public String updateClient(Client client);
 

@@ -1,20 +1,19 @@
 package com.architechz.project.repository;
 
-import java.util.Optional;
+import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.architechz.project.models.*;
+import com.architechz.project.models.RegisterRequest;
 
 @Repository
-public interface ClienteRepository extends JpaRepository<Client, Long> {
+public interface RegisterRepository extends JpaRepository<RegisterRequest, Long> {
 
     Boolean existsByUsername(String username);
 
-    Boolean existsByNit(String Nit);
-
+    @Transactional
     String deleteByUsername(String username);
 
-    Optional<Client> findByUsername(String username);
+    RegisterRequest findByUsername(String username);
 }

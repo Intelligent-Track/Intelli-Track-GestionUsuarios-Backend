@@ -54,7 +54,7 @@ public class ConductoresServiceImpl implements ConductoresService {
                 String token = RandomString.make(10);
 
                 SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), token, rol);
-                AuthService.addUser(user2);
+                AuthService.addUser(user2, false);
 
             } catch (Exception e) {
                 return e.toString();
@@ -111,8 +111,8 @@ public class ConductoresServiceImpl implements ConductoresService {
     }
 
     @Override
-    public String updateDriverFiles(byte[] license, byte[] mecReview, Long id){
-        try{
+    public String updateDriverFiles(byte[] license, byte[] mecReview, Long id) {
+        try {
             Driver driver = this.ConductorRepository.findById(id).orElseThrow();
             driver.setLicense(license);
             driver.setMecReview(mecReview);
