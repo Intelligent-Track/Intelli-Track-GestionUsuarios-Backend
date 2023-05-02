@@ -53,7 +53,7 @@ public class ClienteController {
       return ResponseEntity.ok(new MessageResponse(clienteService.updateClient(clientRequest)));
     }
 
-    @PutMapping("/verifyUser")
+    @PostMapping("/verifyUser")
     public ResponseEntity<?> VerifClient(@Valid @RequestBody ClientVerify clientRequest) {
       System.out.println(clientRequest.getCode());
       return clienteService.verifyClient(clientRequest.getCode());

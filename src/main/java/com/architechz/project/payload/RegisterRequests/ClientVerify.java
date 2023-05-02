@@ -2,14 +2,14 @@ package com.architechz.project.payload.RegisterRequests;
 
 public class ClientVerify {
     
-    private String code;
+    private String Code;
 
     public String getCode() {
-        return code;
+        return Code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setCode(String Code) {
+        this.Code = Code;
     }
 
 	
