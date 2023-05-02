@@ -11,4 +11,6 @@ public interface ClienteRepository extends JpaRepository<Client, Long> {
     Boolean existsByNit(String Nit);
     String deleteByUsername(String username);
     Client findByUsername(String username);
+    Client findByCode(String code);
+    
 }

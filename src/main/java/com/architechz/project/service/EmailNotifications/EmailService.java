@@ -9,5 +9,5 @@ public interface EmailService {
     
     public ResponseEntity<?> newUser(NewUser NewuserNotification);
     public ResponseEntity<?> ForgotPassword(String Username, String token);
-    
+    public ResponseEntity<?> Verify(String Username, String token);
 }

@@ -17,6 +17,7 @@ import com.architechz.project.models.Client;
 import com.architechz.project.payload.response.MessageResponse;
 import com.architechz.project.service.Clientes.ClienteService;
 import com.architechz.project.payload.RegisterRequests.ClienteRequest;
+import com.architechz.project.payload.RegisterRequests.ClientVerify;
 
 /*import com.architechz.project.models.Client;
 import com.architechz.project.payload.response.MessageResponse;
@@ -33,7 +34,7 @@ public class ClienteController {
 
     @PostMapping("/ClientCreate")
     public ResponseEntity<?> ClientSignup(@Valid @RequestBody ClienteRequest clientRequest) {
-      return ResponseEntity.ok(new MessageResponse(clienteService.addUser(clientRequest)));
+      return clienteService.addUser(clientRequest);
     }
 
    /*  @PutMapping("/UpdateClient")
@@ -44,12 +45,18 @@ public class ClienteController {
 
     @GetMapping("/searchClient/{id}")
     public Client searchClient(@PathVariable Long id) {
-      return this.clienteService.findById(id);
+      return clienteService.findById(id);
     }
 
     @PutMapping("/updateClient")
     public ResponseEntity<?> updateClient(@Valid @RequestBody Client clientRequest) {
-      return ResponseEntity.ok(new MessageResponse(this.clienteService.updateClient(clientRequest)));
+      return ResponseEntity.ok(new MessageResponse(clienteService.updateClient(clientRequest)));
+    }
+
+    @PutMapping("/verifyUser")
+    public ResponseEntity<?> VerifClient(@Valid @RequestBody ClientVerify clientRequest) {
+      System.out.println(clientRequest.getCode());
+      return clienteService.verifyClient(clientRequest.getCode());
     }
     
 }

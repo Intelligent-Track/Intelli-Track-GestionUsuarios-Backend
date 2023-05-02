@@ -22,6 +22,7 @@ import com.architechz.project.payload.request.LoginRequest;
 import com.architechz.project.payload.request.SignupRequest;
 import com.architechz.project.payload.response.JwtResponse;
 import com.architechz.project.payload.response.MessageResponse;
+import com.architechz.project.repository.ClienteRepository;
 import com.architechz.project.repository.RoleRepository;
 import com.architechz.project.repository.UserRepository;
 import com.architechz.project.security.jwt.JwtUtils;
@@ -38,6 +39,9 @@ public class AuthController {
 
   @Autowired
   UserRepository userRepository;
+
+  @Autowired
+  ClienteRepository clientRepository;
 
   @Autowired
   RoleRepository roleRepository;
@@ -57,6 +61,20 @@ public class AuthController {
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
+    if(clientRepository.existsByUsername(loginRequest.getUsername()) && !clientRepository.findByUsername(loginRequest.getUsername()).getVerified()){
+
+      //add a retry method to get a new email. 
+      System.out.println("Usuario aun no verificado, verifique el correo primero....");
+      return ResponseEntity.badRequest().body("Usuario aun no verificado, verifique el correo primero....");
+
+    }else{
+
+      if(!clientRepository.findByUsername(loginRequest.getUsername()).getApproved()){
+        System.out.println("Usuario aun no aprobado, una vez aprobado recibiras un correo confirmando....");
+        return ResponseEntity.badRequest().body("Usuario aun no aprobado, una vez aprobado recibiras un correo confirmando....");
+
+      }else{
+
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -73,7 +91,7 @@ public class AuthController {
                          userDetails.getUsername(), 
                          userDetails.getName(), 
                          roles));
-  }
+  }}}
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {

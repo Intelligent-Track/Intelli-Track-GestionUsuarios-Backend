@@ -73,5 +73,31 @@ public class EmailServiceImpl implements EmailService{
 
         }     
         
+    }
+
+
+    @Override
+    public ResponseEntity<?> Verify(String username, String token) {
+        MimeMessage mimeMessage= javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper;
+
+        try {
+            System.out.println("llegue "+ username);
+            mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
+            mimeMessageHelper.setTo(username);
+            
+            String url= "http://localhost:4200/verify-email"; //add login page
+            mimeMessageHelper.setText(
+                "Hola, \n el codigo es: "+ token+ " ingresalo en la siguiente pagina " 
+                + url) ;
+                mimeMessageHelper.setSubject("Architechz verificar correo");
+                javaMailSender.send(mimeMessage);
+           return ResponseEntity.ok("Correo para verificar correo enviado con exito al email: "+ username);     
+
+        } catch (Exception e) {
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body( "Fue imposible mandar el correo en este momento");
+
+        }     
     } 
 }
