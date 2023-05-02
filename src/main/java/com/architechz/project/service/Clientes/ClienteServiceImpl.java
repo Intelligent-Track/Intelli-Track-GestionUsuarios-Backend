@@ -118,7 +118,11 @@ public class ClienteServiceImpl implements ClienteService {
         try {
 
             Client client = clienteRepository.findByCode(code);
+            System.out.println(client.getUsername());
+            System.out.println(client.getVerified());
             client.setVerified(true);
+            clienteRepository.save(client);
+            System.out.println(client.getVerified());
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Código incorrecto, vuelvalo a intentar!");
