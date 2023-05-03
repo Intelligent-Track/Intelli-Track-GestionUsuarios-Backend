@@ -10,14 +10,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(	name = "client")
+@Table(name = "client")
 public class Client {
-    @Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotBlank
-    private String name;
+	private String name;
 
 	@NotBlank
 	@Size(max = 50)
@@ -28,16 +28,14 @@ public class Client {
 
 	private Long phone;
 
-
 	private String job;
-
 
 	private String location;
 
 	private String nit;
 
 	private String companyName;
-	
+
 	private Boolean adm;
 
 	@Size(max = 50)
@@ -47,10 +45,26 @@ public class Client {
 	public Client() {
 	}
 
-	public Client(  String name,  @Size(max = 50) @Email String username,
-			 Long document,  Long phone,  String job,  String location, String nit,
+	public Client(String name, @Size(max = 50) @Email String username,
+			Long document, Long phone, String job, String location, String nit,
 			String companyName, Boolean adm, @Size(max = 50) @Email String managerUsername) {
-		
+
+		this.name = name;
+		this.username = username;
+		this.document = document;
+		this.phone = phone;
+		this.job = job;
+		this.location = location;
+		this.nit = nit;
+		this.companyName = companyName;
+		this.adm = adm;
+		this.managerUsername = managerUsername;
+	}
+
+	public Client(Long id, @NotBlank String name, @NotBlank @Size(max = 50) @Email String username, Long document,
+			Long phone, String job, String location, String nit, String companyName, Boolean adm,
+			@Size(max = 50) @Email String managerUsername) {
+		this.id = id;
 		this.name = name;
 		this.username = username;
 		this.document = document;
@@ -143,17 +157,12 @@ public class Client {
 		this.managerUsername = managerUsername;
 	}
 
-
-
 	public Long getDocument() {
 		return document;
 	}
-
-
 
 	public void setDocument(Long document) {
 		this.document = document;
 	}
 
-	
 }

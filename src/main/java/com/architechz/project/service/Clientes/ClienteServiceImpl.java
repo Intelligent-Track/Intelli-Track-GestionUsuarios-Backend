@@ -12,12 +12,16 @@ import com.architechz.project.payload.RegisterRequests.ClienteRequest;
 import com.architechz.project.repository.ClienteRepository;
 import com.architechz.project.repository.UserRepository;
 import com.architechz.project.service.AuthService.AuthService;
+import com.architechz.project.service.EmailNotifications.EmailService;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
     @Autowired
     AuthService AuthService;
+
+    @Autowired
+    EmailService emailService;
 
     @Autowired
     ClienteRepository clienteRepository;
@@ -27,6 +31,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public String addUser(ClienteRequest user) {
+        String messagge;
         if (this.clienteRepository.existsByUsername(user.getUsername())) {
 
             return "Error: El correo " + user.getUsername() + " ya existe en nuestras bases de datos!";
@@ -34,7 +39,27 @@ public class ClienteServiceImpl implements ClienteService {
 
             if (this.clienteRepository.existsByNit(user.getNit())) {
 
-                return "Error: El Nit " + user.getNit() + " ya existe en nuestras bases de datos!";
+                Set<String> rol = new HashSet<>();
+                rol.add("CLI");
+                Client cliente = new Client(
+                        user.getName(),
+                        user.getUsername(),
+                        user.getDocument(),
+                        user.getPhone(),
+                        "Cliente Representante",
+                        user.getLocation(),
+                        user.getNit(),
+                        user.getCompanyName(),
+                        user.getAdm(),
+                        user.getManagerUsername());
+
+                clienteRepository.save(cliente);
+                messagge = "Bienvenido, usted a sido registrado como un Cliente representante de la empresa"
+                        + user.getCompanyName();
+                emailService.sentMessagge(user.getUsername(), messagge);
+
+                return "El usuario con correo " + user.getUsername()
+                        + " fue añadido como Cliente Representante exitosamente!";
             } else {
 
                 Set<String> rol = new HashSet<>();
@@ -60,6 +85,26 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    public String addClient(Client client) {
+        String messagge;
+        if (this.clienteRepository.existsByUsername(client.getUsername())) {
+
+            return "Error: El correo " + client.getUsername() + " ya existe en nuestras bases de datos!";
+        } else {
+            System.out.println(client.getId());
+            clienteRepository.save(client);
+            messagge = "Bienvenido, usted a sido registrado como un Cliente representante de la empresa"
+                    + client.getCompanyName();
+            emailService.sentMessagge(client.getUsername(), messagge);
+
+            return "El usuario con correo " + client.getUsername()
+                    + " fue añadido como Cliente Representante exitosamente!";
+
+        }
+
+    }
+
+    @Override
     public String delUser(String username) {
         try {
 
@@ -79,8 +124,8 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Client findById(Long id) {
-        return clienteRepository.findById(id).orElseThrow();
+    public Client findByUsername(String username) {
+        return clienteRepository.findByUsername(username).orElseThrow();
     }
 
     @Override
