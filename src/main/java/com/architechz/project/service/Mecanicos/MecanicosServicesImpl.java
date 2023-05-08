@@ -34,59 +34,56 @@ public class MecanicosServicesImpl implements MecanicosService {
     @Override
     public String addUser(MecanicoRequest user) {
         if (MecanicoRepository.existsByUsername(user.getUsername())) {
-            return "Error: El correo "+ user.getUsername() + " ya existe en nuestras bases de datos!";
-          }else{
-        Set<String>rol = new HashSet<>();
-        rol.add("MEC");
-        try {
+            return "Error: El correo " + user.getUsername() + " ya existe en nuestras bases de datos!";
+        } else {
+            Set<String> rol = new HashSet<>();
+            rol.add("MEC");
+            try {
 
-            Mecanic mecanico = new Mecanic(user.getName(), user.getUsername(), user.getDocument(), user.getPhone(), "Mecanico", user.getLocation(), user.getManagerUsername());
-            MecanicoRepository.save(mecanico);
-    
+                Mecanic mecanico = new Mecanic(user.getName(), user.getUsername(), user.getDocument(), user.getPhone(),
+                        "Mecanico", user.getLocation(), user.getManagerUsername());
+                MecanicoRepository.save(mecanico);
 
-            String token = RandomString.make(10);
+                String token = RandomString.make(10);
 
+                SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), token, rol);
+                AuthService.addUser(user2);
 
-            SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), token, rol );
-            AuthService.addUser(user2);
-    
             } catch (Exception e) {
-                return e.toString(); 
-        }
-    
+                return e.toString();
+            }
+
             return "Mecanico guardado con exito";
-    }
+        }
     }
 
     @Override
     public List<Mecanic> GetUser() {
-       return MecanicoRepository.findAll();
+        return MecanicoRepository.findAll();
     }
 
     @Transactional
     public String delUser(String username) {
         System.out.println(username);
         try {
-            
+
             MecanicoRepository.deleteByUsername(username);
             UserRepository.deleteByUsername(username);
-
 
         } catch (Exception e) {
             return e.toString();// TODO: handle exception
         }
 
-
-        return "Mecanico " + username +" borrado con exito!";
+        return "Mecanico " + username + " borrado con exito!";
     }
 
     @Override
     public String UpdateUser(Mecanic user) {
-        
+
         try {
-            
+
             Mecanic Mecanico = MecanicoRepository.findByUsername(user.getUsername());
-            
+
             Mecanico.setLocation(user.getLocation());
             Mecanico.setName(user.getName());
             Mecanico.setPhone(user.getPhone());
@@ -94,11 +91,10 @@ public class MecanicosServicesImpl implements MecanicosService {
             Mecanico.setName(user.getName());
             MecanicoRepository.save(Mecanico);
 
-
         } catch (Exception e) {
             return e.toString();// TODO: handle exception
         }
-        
+
         return "Usuario actualizado con exito!!";
     }
 

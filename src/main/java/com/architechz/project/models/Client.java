@@ -10,14 +10,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(	name = "client")
+@Table(name = "client")
 public class Client {
-    @Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotBlank
-    private String name;
+	private String name;
 
 	@NotBlank
 	@Size(max = 50)
@@ -35,7 +35,7 @@ public class Client {
 	private String nit;
 
 	private String companyName;
-	
+
 	private Boolean adm;
 
 	private Boolean verified;
@@ -150,13 +150,9 @@ public class Client {
 		this.managerUsername = managerUsername;
 	}
 
-
-
 	public Long getDocument() {
 		return document;
 	}
-
-
 
 	public void setDocument(Long document) {
 		this.document = document;

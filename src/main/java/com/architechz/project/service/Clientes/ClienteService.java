@@ -13,11 +13,15 @@ public interface ClienteService {
 
     public abstract ResponseEntity<?> addUser(ClienteRequest user);
 
+    public String addClient(Client client);
+
     public abstract String delUser(String username);
+
+    public abstract String findById(Long id);
 
     public List<Client> getUser();
 
-    public Client findById(Long id);
+    public Client findByUsername(String username);
 
     public String updateClient(Client client);
 

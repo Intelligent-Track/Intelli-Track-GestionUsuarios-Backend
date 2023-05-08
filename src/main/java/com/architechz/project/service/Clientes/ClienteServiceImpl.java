@@ -29,6 +29,9 @@ public class ClienteServiceImpl implements ClienteService {
     AuthService AuthService;
 
     @Autowired
+    EmailService emailService;
+
+    @Autowired
     ClienteRepository clienteRepository;
 
     @Autowired
@@ -76,6 +79,26 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    public String addClient(Client client) {
+        String messagge;
+        if (this.clienteRepository.existsByUsername(client.getUsername())) {
+
+            return "Error: El correo " + client.getUsername() + " ya existe en nuestras bases de datos!";
+        } else {
+            System.out.println(client.getId());
+            clienteRepository.save(client);
+            messagge = "Bienvenido, usted a sido registrado como un Cliente representante de la empresa"
+                    + client.getCompanyName();
+            emailService.sentMessagge(client.getUsername(), messagge);
+
+            return "El usuario con correo " + client.getUsername()
+                    + " fue añadido como Cliente Representante exitosamente!";
+
+        }
+
+    }
+
+    @Override
     public String delUser(String username) {
         try {
 
@@ -95,8 +118,8 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Client findById(Long id) {
-        return clienteRepository.findById(id).orElseThrow();
+    public Client findByUsername(String username) {
+        return clienteRepository.findByUsername(username);
     }
 
     @Override
@@ -176,5 +199,11 @@ public class ClienteServiceImpl implements ClienteService {
             return 
             ResponseEntity.ok("Usuario Aprobado!"); 
     
+    }
+
+    @Override
+    public String findById(Long id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 }

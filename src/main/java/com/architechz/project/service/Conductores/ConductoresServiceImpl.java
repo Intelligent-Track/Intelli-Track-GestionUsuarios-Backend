@@ -111,8 +111,8 @@ public class ConductoresServiceImpl implements ConductoresService {
     }
 
     @Override
-    public String updateDriverFiles(byte[] license, byte[] mecReview, Long id){
-        try{
+    public String updateDriverFiles(byte[] license, byte[] mecReview, Long id) {
+        try {
             Driver driver = this.ConductorRepository.findById(id).orElseThrow();
             driver.setLicense(license);
             driver.setMecReview(mecReview);

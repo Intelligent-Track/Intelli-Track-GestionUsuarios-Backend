@@ -92,7 +92,26 @@ public class EmailServiceImpl implements EmailService{
                 + url) ;
                 mimeMessageHelper.setSubject("Architechz verificar correo");
                 javaMailSender.send(mimeMessage);
-           return ResponseEntity.ok("Correo para verificar correo enviado con exito al email: "+ username);     
+           return ResponseEntity.ok("Correo para verificar correo enviado con exito al email: "+ username); 
+        }
+catch (Exception e) {
+    return ResponseEntity.ok("Correo para verificar correo no enviado con exito al email: "+ username); 
+        }
+    }
+    @Override
+    public ResponseEntity<?> sentMessagge(String username, String messagge) {
+        
+        MimeMessage mimeMessage= javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper;
+
+        try {
+            System.out.println("llegue "+ username);
+            mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
+            mimeMessageHelper.setTo(username);
+             
+            mimeMessageHelper.setText(messagge);
+            javaMailSender.send(mimeMessage);
+            return ResponseEntity.ok("Mensaje enviado por correo con exito al usuario con correo: "+ username);     
 
         } catch (Exception e) {
 

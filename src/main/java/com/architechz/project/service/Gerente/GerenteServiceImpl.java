@@ -21,7 +21,6 @@ import com.architechz.project.payload.request.SignupRequest;
 @Service
 public class GerenteServiceImpl implements GerenteService {
 
-
     @Autowired
     AuthService AuthService;
 
@@ -34,36 +33,37 @@ public class GerenteServiceImpl implements GerenteService {
     @Override
     public String addUser(GerenteRequest user) {
         if (GerenteRepository.existsByUsername(user.getUsername())) {
-            return "Error: El correo "+ user.getUsername() + " ya existe en nuestras bases de datos!";
-          }else{
-        Set<String>rol = new HashSet<>();
-        
+            return "Error: El correo " + user.getUsername() + " ya existe en nuestras bases de datos!";
+        } else {
+            Set<String> rol = new HashSet<>();
 
-        try {
+            try {
 
-            if(user.getGerenteGeneral()){
-                rol.add("GGEN");
-                Manager gerente = new Manager(user.getName(), user.getUsername(), user.getDocument(), user.getPhone(), "Gerente General", user.getLocation(), user.getGerenteGeneral(), user.getManagerUsername());
-                GerenteRepository.save(gerente);
-            }else{
-                rol.add("GREG");
-                Manager gerente = new Manager(user.getName(), user.getUsername(), user.getDocument(), user.getPhone(), "Gerente Regional", user.getLocation(), user.getGerenteGeneral(), user.getManagerUsername());
-                GerenteRepository.save(gerente);
+                if (user.getGerenteGeneral()) {
+                    rol.add("GGEN");
+                    Manager gerente = new Manager(user.getName(), user.getUsername(), user.getDocument(),
+                            user.getPhone(), "Gerente General", user.getLocation(), user.getGerenteGeneral(),
+                            user.getManagerUsername());
+                    GerenteRepository.save(gerente);
+                } else {
+                    rol.add("GREG");
+                    Manager gerente = new Manager(user.getName(), user.getUsername(), user.getDocument(),
+                            user.getPhone(), "Gerente Regional", user.getLocation(), user.getGerenteGeneral(),
+                            user.getManagerUsername());
+                    GerenteRepository.save(gerente);
+                }
+
+                String token = RandomString.make(10);
+
+                SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), token, rol);
+                AuthService.addUser(user2);
+
+            } catch (Exception e) {
+                return e.toString();
             }
 
-            
-            String token = RandomString.make(10);
-
-
-            SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), token, rol );
-            AuthService.addUser(user2);
-    
-            } catch (Exception e) {
-                return e.toString(); 
-        }
-    
             return "Gerente guardado con exito";
-    }
+        }
 
     }
 
@@ -76,26 +76,24 @@ public class GerenteServiceImpl implements GerenteService {
     public String delUser(String username) {
         System.out.println(username);
         try {
-            
+
             GerenteRepository.deleteByUsername(username);
             UserRepository.deleteByUsername(username);
-
 
         } catch (Exception e) {
             return e.toString();// TODO: handle exception
         }
 
-
-        return "Gerente " + username +" borrado con exito!";
+        return "Gerente " + username + " borrado con exito!";
     }
 
     @Override
     public String UpdateUser(Manager user) {
-       
+
         try {
-            
+
             Manager manager = GerenteRepository.findByUsername(user.getUsername());
-            
+
             manager.setLocation(user.getLocation());
             manager.setName(user.getName());
             manager.setPhone(user.getPhone());
@@ -103,11 +101,10 @@ public class GerenteServiceImpl implements GerenteService {
             manager.setName(user.getName());
             GerenteRepository.save(manager);
 
-
         } catch (Exception e) {
             return e.toString();// TODO: handle exception
         }
-        
+
         return "Usuario actualizado con exito!!";
     }
 

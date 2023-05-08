@@ -28,26 +28,34 @@ import com.architechz.project.service.Clientes.ClienteService;*/
 @RequestMapping("/api/cli")
 public class ClienteController {
 
-    @Autowired
-    ClienteService clienteService;
+  @Autowired
+  ClienteService clienteService;
 
+  @PostMapping("/ClientCreate")
+  public ResponseEntity<?> ClientSignup(@Valid @RequestBody ClienteRequest clientRequest) {
+    return ResponseEntity.ok((clienteService.addUser(clientRequest)));
+  }
 
-    @PostMapping("/ClientCreate")
+  /*   @PostMapping("/ClientCreate")
     public ResponseEntity<?> ClientSignup(@Valid @RequestBody ClienteRequest clientRequest) {
       System.out.println("fuuuuuuck");
       return clienteService.addUser(clientRequest);
-    }
-
-   /*  @PutMapping("/UpdateClient")
-    public ResponseEntity<?> UpdateClient(@Valid @RequestBody Client clientRequest) {
-      return ResponseEntity.ok(new MessageResponse(clienteService.UpdateClient(clientRequest)));
     }*/
 
+  @GetMapping("/searchClient/{username}")
+  public Client searchClient(@PathVariable String username) {
+    return this.clienteService.findByUsername(username);
+  }
 
-    @GetMapping("/searchClient/{id}")
+  /*@PutMapping("/updateClient")
+  public ResponseEntity<?> updateClient(@Valid @RequestBody Client clientRequest) {
+    return ResponseEntity.ok(new MessageResponse(this.clienteService.updateClient(clientRequest)));
+  }*/
+
+    /*@GetMapping("/searchClient/{id}")
     public Client searchClient(@PathVariable Long id) {
       return clienteService.findById(id);
-    }
+    }*/
 
     @PutMapping("/updateClient")
     public ResponseEntity<?> updateClient(@Valid @RequestBody Client clientRequest) {
