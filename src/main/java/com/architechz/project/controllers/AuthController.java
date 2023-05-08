@@ -28,6 +28,7 @@ import com.architechz.project.repository.UserRepository;
 import com.architechz.project.security.jwt.JwtUtils;
 import com.architechz.project.security.services.UserDetailsImpl;
 import com.architechz.project.service.AuthService.AuthService;
+import com.architechz.project.service.Clientes.ClienteService;
 import com.architechz.project.service.ResetPassword.ResetPasswordService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -47,6 +48,9 @@ public class AuthController {
   RoleRepository roleRepository;
 
   @Autowired
+  ClienteService clienteService;
+
+  @Autowired
   PasswordEncoder encoder;
 
   @Autowired
@@ -61,19 +65,13 @@ public class AuthController {
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-    if(clientRepository.existsByUsername(loginRequest.getUsername()) && !clientRepository.findByUsername(loginRequest.getUsername()).getVerified()){
-
-      //add a retry method to get a new email. 
-      System.out.println("Usuario aun no verificado, verifique el correo primero....");
+    if(clienteService.verifyPet(loginRequest) == "1"){
       return ResponseEntity.badRequest().body("Usuario aun no verificado, verifique el correo primero....");
-
     }else{
-
-      if(!clientRepository.findByUsername(loginRequest.getUsername()).getApproved()){
-        System.out.println("Usuario aun no aprobado, una vez aprobado recibiras un correo confirmando....");
+      if(clienteService.verifyPet(loginRequest) == "2"){
         return ResponseEntity.badRequest().body("Usuario aun no aprobado, una vez aprobado recibiras un correo confirmando....");
-
-      }else{
+      }
+    }
 
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -91,7 +89,7 @@ public class AuthController {
                          userDetails.getUsername(), 
                          userDetails.getName(), 
                          roles));
-  }}}
+  }
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {

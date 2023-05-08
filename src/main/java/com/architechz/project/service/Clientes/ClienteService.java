@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 
 import com.architechz.project.models.Client;
 import com.architechz.project.payload.RegisterRequests.ClienteRequest;
+import com.architechz.project.payload.request.LoginRequest;
+import com.architechz.project.payload.InsertionRequests.Approve;
 
 public interface ClienteService {
 
@@ -20,5 +22,9 @@ public interface ClienteService {
     public String updateClient(Client client);
 
     public ResponseEntity<?> verifyClient(String code);
+
+    public String verifyPet(LoginRequest loginRequest);
+
+    public ResponseEntity<?> AprroveCli(Approve code);
 
 }

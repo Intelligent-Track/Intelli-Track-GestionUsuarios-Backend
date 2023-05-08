@@ -34,6 +34,7 @@ public class ClienteController {
 
     @PostMapping("/ClientCreate")
     public ResponseEntity<?> ClientSignup(@Valid @RequestBody ClienteRequest clientRequest) {
+      System.out.println("fuuuuuuck");
       return clienteService.addUser(clientRequest);
     }
 

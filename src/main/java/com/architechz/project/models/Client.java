@@ -28,9 +28,7 @@ public class Client {
 
 	private Long phone;
 
-
 	private String job;
-
 
 	private String location;
 

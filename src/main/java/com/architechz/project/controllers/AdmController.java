@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.architechz.project.models.Client;
 import com.architechz.project.models.Driver;
 import com.architechz.project.models.Manager;
 import com.architechz.project.models.Mecanic;
@@ -26,10 +27,12 @@ import com.architechz.project.payload.RegisterRequests.GerenteRequest;
 import com.architechz.project.payload.RegisterRequests.MecanicoRequest;
 import com.architechz.project.payload.RegisterRequests.OperadorRequest;
 import com.architechz.project.payload.response.MessageResponse;
+import com.architechz.project.service.Clientes.ClienteService;
 import com.architechz.project.service.Conductores.*;
 import com.architechz.project.service.Gerente.*;
 import com.architechz.project.service.Mecanicos.*;
 import com.architechz.project.service.Operadores.*;
+import com.architechz.project.payload.InsertionRequests.Approve;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -41,6 +44,9 @@ public class AdmController {
 
     @Autowired
     MecanicosService MecanicosService;
+
+    @Autowired
+    ClienteService clienteService;
 
     @Autowired
     ConductoresService ConductoresService;
@@ -146,5 +152,12 @@ public class AdmController {
     public ResponseEntity<?> AdmSignup(@Valid @RequestBody SignupRequest signUpRequest) {
       return ResponseEntity.ok(new MessageResponse(authService.addUser(signUpRequest)));
     }*/
+
+    @PostMapping("/AcceptUser")
+    public ResponseEntity<?> VerifClient(@Valid @RequestBody Approve clientRequest) {
+      System.out.println(clientRequest.getUsername());
+      return clienteService.AprroveCli(clientRequest);
+    }
+
 
 }

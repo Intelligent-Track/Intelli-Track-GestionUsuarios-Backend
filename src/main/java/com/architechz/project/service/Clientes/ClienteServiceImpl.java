@@ -11,11 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.architechz.project.models.Client;
+import com.architechz.project.payload.InsertionRequests.Approve;
 import com.architechz.project.payload.RegisterRequests.ClienteRequest;
 import com.architechz.project.repository.ClienteRepository;
 import com.architechz.project.repository.UserRepository;
 import com.architechz.project.service.AuthService.AuthService;
 import com.architechz.project.service.EmailNotifications.EmailService;
+import com.architechz.project.payload.request.LoginRequest;
+import com.architechz.project.payload.request.SignupRequest;
 
 import net.bytebuddy.utility.RandomString;
 
@@ -29,6 +32,9 @@ public class ClienteServiceImpl implements ClienteService {
     ClienteRepository clienteRepository;
 
     @Autowired
+    AuthService authservice;
+
+    @Autowired
     UserRepository UserRepository;
 
     @Autowired
@@ -37,7 +43,6 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ResponseEntity<?> addUser(ClienteRequest user) {
         if (this.clienteRepository.existsByUsername(user.getUsername())) {
-
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: El correo " + user.getUsername() + " ya existe en nuestras bases de datos!");
         } else {
             System.out.println(user.getNit());
@@ -63,6 +68,8 @@ public class ClienteServiceImpl implements ClienteService {
                     clienteRepository.save(cliente);
                 }
                 email.Verify(user.getUsername(), token);//email de verificacao
+                SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), user.getPassword(), rol );
+                AuthService.addUser(user2);
             }               
             return ResponseEntity.ok("Hola " + user.getName() + ", fue enviado un correo de verificacion al siguiente correo: " + user.getUsername());
         }
@@ -126,5 +133,48 @@ public class ClienteServiceImpl implements ClienteService {
     }
             return 
             ResponseEntity.ok("Cliente verificado con exito"); 
+    }
+
+    @Override
+    public String verifyPet(LoginRequest loginRequest) {
+       
+        try {
+            
+        if(clienteRepository.existsByUsername(loginRequest.getUsername()) && !clienteRepository.findByUsername(loginRequest.getUsername()).getVerified()){
+
+            //add a retry method to get a new email. 
+            System.out.println("Usuario aun no verificado, verifique el correo primero....");
+            return "1";
+      
+          }else{
+      
+            if(!clienteRepository.findByUsername(loginRequest.getUsername()).getApproved()){
+              System.out.println("Usuario aun no aprobado, una vez aprobado recibiras un correo confirmando....");
+              return "2";
+      
+            }}
+
+        } catch (Exception e) {
+            return "3";
+        }
+
+        return "3";
+    }
+
+    @Override
+    public ResponseEntity<?> AprroveCli(Approve code) {
+
+        try {
+
+            Client client = clienteRepository.findByUsername(code.getUsername());
+            client.setApproved(true);
+            clienteRepository.save(client);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Usuario no Aprobado!");
+    }
+            return 
+            ResponseEntity.ok("Usuario Aprobado!"); 
+    
     }
 }
