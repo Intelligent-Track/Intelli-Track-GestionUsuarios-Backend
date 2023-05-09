@@ -32,7 +32,8 @@ public class EmailServiceImpl implements EmailService{
             
             mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
             mimeMessageHelper.setTo(NewuserNotification.getUsername());
-            String url=" http://localhost:4200"; //add login page
+           // String url=" http://localhost:4200"; //add login page https://10.43.101.95/login
+            String url="https://10.43.101.95/api/auth/login";
             mimeMessageHelper.setText(
                 "Hola "+ NewuserNotification.getName() + " bienvenido a Architechz es un gusto contar contigo, \n a seguir se le brindara las credenciales para entrar a la aplicacion en el enlace " 
                 + url + " : \n Username: "+ NewuserNotification.getUsername() + "\n Contrasena: "+ NewuserNotification.getPassword());
@@ -59,7 +60,8 @@ public class EmailServiceImpl implements EmailService{
             mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
             mimeMessageHelper.setTo(username);
             
-            String url= "http://localhost:4200/change-password/"+token; //add login page
+           // String url= "http://localhost:4200/change-password/"+token; //add login page https://10.43.101.95/login
+            String url= "https://10.43.101.95/api/auth/change-password/"+token;
             mimeMessageHelper.setText(
                 "Hola, \n en el siguiente enlace podras actualizar tu contrasena: " 
                 + url) ;
