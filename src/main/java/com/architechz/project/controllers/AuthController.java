@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -83,12 +84,14 @@ public class AuthController {
 
   @PostMapping("/forgotPassword")
   public ResponseEntity<?> ForgotPassword(@Valid @RequestBody PasswordChange password) {
+    System.out.println(password.getUsername());
     return ResponseEntity.ok().body(resetPasswordService.PasswordUser(password));
   }
 
-  @PostMapping("/ResetPassword")
-  public ResponseEntity<?> ResetPassword(@Valid @RequestBody PasswordChange password) {
-    return ResponseEntity.ok().body(resetPasswordService.ResetUser(password));
+  @PostMapping("/ResetPassword/{token}")
+  public ResponseEntity<?> ResetPassword(@PathVariable String token, @Valid @RequestBody PasswordChange password) {
+    System.out.println("Este es el token " + token);
+    return ResponseEntity.ok().body(resetPasswordService.ResetUser(password,token));
   }
 
 }
