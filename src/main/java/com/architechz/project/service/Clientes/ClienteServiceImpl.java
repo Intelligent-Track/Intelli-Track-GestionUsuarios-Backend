@@ -51,7 +51,7 @@ public class ClienteServiceImpl implements ClienteService {
             System.out.println(user.getNit());
             if (this.clienteRepository.existsByNit(user.getNit())) {
 
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: El Nit " + user.getNit() + " ya existe en nuestras bases de datos!");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: El Nit " + user.getNit() + " ya existe en nuestras bases de datos!");
             } else {
                 String token = RandomString.make(5);
                 Set<String> rol = new HashSet<>();
@@ -152,7 +152,7 @@ public class ClienteServiceImpl implements ClienteService {
             clienteRepository.save(client);
             
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Código incorrecto, vuelvalo a intentar!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Código incorrecto, vuelvalo a intentar!");
     }
             return 
             ResponseEntity.ok("Cliente verificado con exito"); 
@@ -194,7 +194,7 @@ public class ClienteServiceImpl implements ClienteService {
             clienteRepository.save(client);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Usuario no Aprobado!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuario no Aprobado!");
     }
             return 
             ResponseEntity.ok("Usuario Aprobado!"); 
