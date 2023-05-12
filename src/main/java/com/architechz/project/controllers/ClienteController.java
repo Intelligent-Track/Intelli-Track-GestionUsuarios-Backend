@@ -30,9 +30,21 @@ public class ClienteController {
 
   @PostMapping("/ClientCreate")
   public ResponseEntity<?> ClientSignup(@Valid @RequestBody ClienteRequest clientRequest) {
-    return ResponseEntity.ok((clienteService.addUser(clientRequest)));
-  }
+    System.out.println(clientRequest.getUsername());
+    System.out.println(clientRequest.getNit());
 
+    ResponseEntity<?> response = clienteService.addUser(clientRequest);
+    
+    if (response.getStatusCode().is2xxSuccessful()) {
+      // The HTTP status code indicates a success response
+      return ResponseEntity.ok(response.getBody());
+  } else {
+      // The HTTP status code indicates an error response
+      return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+  }
+}
+    
+    
   @GetMapping("/searchClient/{username}")
   public Client searchClient(@PathVariable String username) {
     return this.clienteService.findByUsername(username);
@@ -46,7 +58,8 @@ public class ClienteController {
     @PostMapping("/verifyUser")
     public ResponseEntity<?> VerifClient(@Valid @RequestBody ClientVerify clientRequest) {
       System.out.println(clientRequest.getCode());
-      return clienteService.verifyClient(clientRequest.getCode());
+      System.out.println(clientRequest.getUsername());
+      return clienteService.verifyClient(clientRequest.getCode(),clientRequest.getUsername());
     }
     
 }

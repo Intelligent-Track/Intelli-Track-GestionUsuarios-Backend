@@ -45,13 +45,14 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ResponseEntity<?> addUser(ClienteRequest user) {
+
         if (this.clienteRepository.existsByUsername(user.getUsername())) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: El correo " + user.getUsername() + " ya existe en nuestras bases de datos!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: El correo " + user.getUsername() + " ya existe en nuestras bases de datos!");
         } else {
             System.out.println(user.getNit());
             if (this.clienteRepository.existsByNit(user.getNit())) {
 
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: El Nit " + user.getNit() + " ya existe en nuestras bases de datos!");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: El Nit " + user.getNit() + " ya existe en nuestras bases de datos!");
             } else {
                 String token = RandomString.make(5);
                 Set<String> rol = new HashSet<>();
@@ -144,18 +145,21 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public ResponseEntity<?> verifyClient(String code) {
+    public ResponseEntity<?> verifyClient(String code, String username) {
         try {
 
             Client client = clienteRepository.findByCode(code);
             client.setVerified(true);
+            client.setCode("verified");
             clienteRepository.save(client);
+            System.out.println("email enviado a adm");
             
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Código incorrecto, vuelvalo a intentar!");
     }
-            return 
-            ResponseEntity.ok("Cliente verificado con exito"); 
+            
+            
+            return ResponseEntity.ok("Cliente verificado con exito"); 
     }
 
     @Override
@@ -189,16 +193,26 @@ public class ClienteServiceImpl implements ClienteService {
 
         try {
 
+            if(code.getResult()=="true"){
             Client client = clienteRepository.findByUsername(code.getUsername());
             client.setApproved(true);
             clienteRepository.save(client);
+            
+            return ResponseEntity.ok("Usuario Aprobado!");
+                     
+    
+            }else{
+
+                clienteRepository.deleteByUsername(code.getUsername());
+                UserRepository.deleteByUsername(code.getUsername());
+                return ResponseEntity.ok("Usuario no aprobado y eliminado de las bases de datos!");
+            }
+
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuario no Aprobado!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Imposible de aprobar a usuario!");
     }
-            return 
-            ResponseEntity.ok("Usuario Aprobado!"); 
-    
+            
     }
 
     @Override
@@ -206,4 +220,11 @@ public class ClienteServiceImpl implements ClienteService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
+
+    @Override
+    public List<Client> GetClientsApprove() {
+        
+        return clienteRepository.findByApproved(false);
+
+       }
 }

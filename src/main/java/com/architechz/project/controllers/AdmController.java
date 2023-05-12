@@ -1,5 +1,7 @@
 package com.architechz.project.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,16 +150,21 @@ public class AdmController {
     }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-   /*  @PostMapping("/AdmSignup")
-    public ResponseEntity<?> AdmSignup(@Valid @RequestBody SignupRequest signUpRequest) {
-      return ResponseEntity.ok(new MessageResponse(authService.addUser(signUpRequest)));
-    }*/
-
     @PostMapping("/AcceptUser")
     public ResponseEntity<?> VerifClient(@Valid @RequestBody Approve clientRequest) {
-      System.out.println(clientRequest.getUsername());
       return clienteService.AprroveCli(clientRequest);
     }
 
+    @GetMapping("/ClientstoAccept")
+    public ResponseEntity<?> Clients() {
+      List<Client> clients = clienteService.GetClientsApprove();
+
+    if (!clients.isEmpty()) {
+        return ResponseEntity.ok(clients);
+    } else {
+        return ResponseEntity.status(HttpStatus.OK).body("No hay nuevas peticiones...");
+    }
+      
+    }
 
 }

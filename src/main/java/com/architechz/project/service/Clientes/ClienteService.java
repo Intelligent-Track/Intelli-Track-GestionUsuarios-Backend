@@ -25,7 +25,9 @@ public interface ClienteService {
 
     public String updateClient(Client client);
 
-    public ResponseEntity<?> verifyClient(String code);
+    public List<Client> GetClientsApprove();
+
+    public ResponseEntity<?> verifyClient(String code,String username);
 
     public String verifyPet(LoginRequest loginRequest);
 

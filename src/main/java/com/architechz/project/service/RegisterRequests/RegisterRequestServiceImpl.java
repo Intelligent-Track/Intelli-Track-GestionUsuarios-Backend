@@ -63,7 +63,7 @@ public class RegisterRequestServiceImpl implements RegisterRequestService {
         return registerRepository.findAll();
     }
 
-    @Override
+     @Override
     public String manageRequest(RegisterRequest registerRequest) {
      /*    try {
             if (registerRequest.getAccepted()) {

@@ -55,7 +55,6 @@ public class EmailServiceImpl implements EmailService{
         MimeMessageHelper mimeMessageHelper;
 
         try {
-            System.out.println("llegue "+ username);
             mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
             mimeMessageHelper.setTo(username);
             
@@ -82,7 +81,6 @@ public class EmailServiceImpl implements EmailService{
         MimeMessageHelper mimeMessageHelper;
 
         try {
-            System.out.println("llegue "+ username);
             mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
             mimeMessageHelper.setTo(username);
             
@@ -105,7 +103,6 @@ catch (Exception e) {
         MimeMessageHelper mimeMessageHelper;
 
         try {
-            System.out.println("llegue "+ username);
             mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
             mimeMessageHelper.setTo(username);
              

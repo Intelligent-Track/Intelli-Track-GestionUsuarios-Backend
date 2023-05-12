@@ -5,7 +5,7 @@ public class Approve {
 
 	private String username;
 
-	private boolean accepted=false;
+	private String result;
 
     public String getUsername() {
         return username;
@@ -15,13 +15,14 @@ public class Approve {
         this.username = username;
     }
 
-    public boolean isAccepted() {
-        return accepted;
+    public String getResult() {
+        return result;
     }
 
-    public void setAccepted(boolean accepted) {
-        this.accepted = accepted;
+    public void setResult(String result) {
+        this.result = result;
     }
+
 
 	
 }
