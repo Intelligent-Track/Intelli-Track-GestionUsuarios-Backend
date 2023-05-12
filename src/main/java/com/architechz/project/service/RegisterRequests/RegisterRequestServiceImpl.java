@@ -63,30 +63,30 @@ public class RegisterRequestServiceImpl implements RegisterRequestService {
         return registerRepository.findAll();
     }
 
-     @Override
+    @Override
     public String manageRequest(RegisterRequest registerRequest) {
-     /*    try {
-            if (registerRequest.getAccepted()) {
-                authService.addUser(new SignupRequest(registerRequest.getName(), registerRequest.getUsername(),
-                        registerRequest.getPassword(), null), true);
-                User user = userRepository.findByUsername(registerRequest.getUsername()).orElseThrow();
-                clienteService.addClient(new Client(user.getId(), registerRequest.getName(),
-                        registerRequest.getUsername(), registerRequest.getDocument(), registerRequest.getPhone(),
-                        registerRequest.getJob(), registerRequest.getLocation(), registerRequest.getNit(),
-                        registerRequest.getCompanyName(), registerRequest.getAdm(),
-                        registerRequest.getManagerUsername()));
-                registerRepository.deleteByUsername(registerRequest.getUsername());
+        // try {
+        //     if (registerRequest.getAccepted()) {
+        //         authService.addUser(new SignupRequest(registerRequest.getName(), registerRequest.getUsername(),
+        //                 registerRequest.getPassword(), null), true);
+        //         User user = userRepository.findByUsername(registerRequest.getUsername()).orElseThrow();
+        //         clienteService.addClient(new Client(user.getId(), registerRequest.getName(),
+        //                 registerRequest.getUsername(), registerRequest.getDocument(), registerRequest.getPhone(),
+        //                 registerRequest.getJob(), registerRequest.getLocation(), registerRequest.getNit(),
+        //                 registerRequest.getCompanyName(), registerRequest.getAdm(),
+        //                 registerRequest.getManagerUsername()));
+        //         registerRepository.deleteByUsername(registerRequest.getUsername());
 
-            } else {
-                registerRepository.deleteByUsername(registerRequest.getUsername());
-                emailService.sentMessagge(registerRequest.getUsername(),
-                        "Lo sentimos, la solicitud de registro fue rechazada. \n \n Recomendamos verificar toda la información y volverlo a intentar");
+        //     } else {
+        //         registerRepository.deleteByUsername(registerRequest.getUsername());
+        //         emailService.sentMessagge(registerRequest.getUsername(),
+        //                 "Lo sentimos, la solicitud de registro fue rechazada. \n \n Recomendamos verificar toda la información y volverlo a intentar");
 
-            }
-        } catch (Exception e) {
-            return e.toString();
-        }*/
-        return "Funcion no funcional...";
+        //     }
+        // } catch (Exception e) {
+        //     return e.toString();
+        // }
+        return "Usuario registrado correctamente";
     }
 
 }

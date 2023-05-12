@@ -15,9 +15,9 @@ public interface ClienteService {
 
     public String addClient(Client client);
 
-    public abstract String delUser(String username);
+    public String delUser(String username);
 
-    public abstract String findById(Long id);
+    public String findById(Long id);
 
     public List<Client> getUser();
 
@@ -31,6 +31,6 @@ public interface ClienteService {
 
     public String verifyPet(LoginRequest loginRequest);
 
-    public ResponseEntity<?> AprroveCli(Approve code);
+    public ResponseEntity<?> aproveClient(Approve code);
 
 }

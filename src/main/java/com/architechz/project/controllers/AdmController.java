@@ -41,130 +41,138 @@ import com.architechz.project.payload.InsertionRequests.Approve;
 @RequestMapping("/api/adm")
 public class AdmController {
 
-    @Autowired
-    OperadoresService OperadoresService;
+  @Autowired
+  OperadoresService OperadoresService;
 
-    @Autowired
-    MecanicosService MecanicosService;
+  @Autowired
+  MecanicosService MecanicosService;
 
-    @Autowired
-    ClienteService clienteService;
+  @Autowired
+  ClienteService clienteService;
 
-    @Autowired
-    ConductoresService ConductoresService;
+  @Autowired
+  ConductoresService ConductoresService;
 
-    @Autowired
-    GerenteService GerenteService;
+  @Autowired
+  GerenteService GerenteService;
 
-  /*   @Autowired
-    OperadoresService OperadoresService;
-    */
-/////////////////////////////////////////////////////// Crear usuarios ///////////////////////////////////////////////////////////////
-    @PostMapping("/OperatorCreate")
-    public ResponseEntity<?> OperadorSignup(@Valid @RequestBody OperadorRequest operadorRequest) {
-      return ResponseEntity.ok(new MessageResponse(OperadoresService.addUser(operadorRequest)));
+  /*
+   * @Autowired
+   * OperadoresService OperadoresService;
+   */
+  /////////////////////////////////////////////////////// Crear usuarios
+  /////////////////////////////////////////////////////// ///////////////////////////////////////////////////////////////
+  @PostMapping("/OperatorCreate")
+  public ResponseEntity<?> OperadorSignup(@Valid @RequestBody OperadorRequest operadorRequest) {
+    return ResponseEntity.ok(new MessageResponse(OperadoresService.addUser(operadorRequest)));
+  }
+
+  @PostMapping("/MecanicCreate")
+  public ResponseEntity<?> MecanicoSignup(@Valid @RequestBody MecanicoRequest mecanicoRequest) {
+    return ResponseEntity.ok(new MessageResponse(MecanicosService.addUser(mecanicoRequest)));
+  }
+
+  @PostMapping("/DriverCreate")
+  public ResponseEntity<?> ConductorSignup(@Valid @RequestBody ConductorRequest conductorRequest) {
+    return ResponseEntity.ok(new MessageResponse(ConductoresService.addUser(conductorRequest)));
+  }
+
+  @PutMapping("/uploadDriverFiles")
+  public ResponseEntity<?> uploadDriverFiles(@RequestParam("licPhoto") MultipartFile license,
+      @RequestParam("mecPhoto") MultipartFile mecReview, @RequestParam("id") Long id) {
+    try {
+      return ResponseEntity
+          .ok(new MessageResponse(ConductoresService.updateDriverFiles(license.getBytes(), mecReview.getBytes(), id)));
+    } catch (Exception e) {
+      return new ResponseEntity<>(new MessageResponse(e.toString()), HttpStatus.BAD_REQUEST);
     }
+  }
 
-    @PostMapping("/MecanicCreate")
-    public ResponseEntity<?> MecanicoSignup(@Valid @RequestBody MecanicoRequest mecanicoRequest) {
-      return ResponseEntity.ok(new MessageResponse(MecanicosService.addUser(mecanicoRequest)));
-    }
+  @PostMapping("/ManagerCreate")
+  public ResponseEntity<?> GerenteSignup(@Valid @RequestBody GerenteRequest gerenteRequest) {
+    return ResponseEntity.ok(new MessageResponse(GerenteService.addUser(gerenteRequest)));
+  }
 
-    @PostMapping("/DriverCreate")
-    public ResponseEntity<?> ConductorSignup(@Valid @RequestBody ConductorRequest conductorRequest) {
-      return ResponseEntity.ok(new MessageResponse(ConductoresService.addUser(conductorRequest)));
-    }
+  /////////////////////////////////////////////////// Obtener lista de empleados
+  /////////////////////////////////////////////////// /////////////////////////////////////////////////////
+  @GetMapping("/GetOperators")
+  public ResponseEntity<?> GetOperador() {
+    return new ResponseEntity<>(OperadoresService.GetUser(), HttpStatus.OK);
+  }
 
-    @PutMapping("/uploadDriverFiles")
-    public ResponseEntity<?> uploadDriverFiles(@RequestParam("licPhoto") MultipartFile license, @RequestParam("mecPhoto") MultipartFile mecReview, @RequestParam("id") Long id) {
-      try{
-        return ResponseEntity.ok(new MessageResponse(ConductoresService.updateDriverFiles(license.getBytes(), mecReview.getBytes(), id)));
-      } catch(Exception e) {
-        return new ResponseEntity<>(new MessageResponse(e.toString()), HttpStatus.BAD_REQUEST);
-      }
-    }
+  @GetMapping("/GetMecanics")
+  public ResponseEntity<?> GetMecanico() {
+    return new ResponseEntity<>(MecanicosService.GetUser(), HttpStatus.OK);
+  }
 
-    @PostMapping("/ManagerCreate")
-    public ResponseEntity<?> GerenteSignup(@Valid @RequestBody GerenteRequest gerenteRequest) {
-      return ResponseEntity.ok(new MessageResponse(GerenteService.addUser(gerenteRequest)));
-    }
-/////////////////////////////////////////////////// Obtener lista de empleados /////////////////////////////////////////////////////
-    @GetMapping("/GetOperators")
-    public ResponseEntity<?> GetOperador() {
-      return new ResponseEntity<>(OperadoresService.GetUser(), HttpStatus.OK);
-    }
+  @GetMapping("/GetDrivers")
+  public ResponseEntity<?> GetConductor() {
+    return new ResponseEntity<>(ConductoresService.GetUser(), HttpStatus.OK);
+  }
 
-    @GetMapping("/GetMecanics")
-    public ResponseEntity<?> GetMecanico() {
-      return new ResponseEntity<>(MecanicosService.GetUser(), HttpStatus.OK);
-    }
+  @GetMapping("/GetManager")
+  public ResponseEntity<?> GetGerente() {
+    return new ResponseEntity<>(GerenteService.GetUser(), HttpStatus.OK);
+  }
 
-    @GetMapping("/GetDrivers")
-    public ResponseEntity<?> GetConductor() {
-      return new ResponseEntity<>(ConductoresService.GetUser(), HttpStatus.OK);
-    }
+  ////////////////////////////////////////////////// Delete Usuarios
+  ////////////////////////////////////////////////// /////////////////////////////////////////////////////////////////
+  @DeleteMapping("/DeleteOperator/{username}")
+  public ResponseEntity<?> DelOperador(@PathVariable String username) {
+    return ResponseEntity.ok(new MessageResponse(OperadoresService.delUser(username)));
+  }
 
-    @GetMapping("/GetManager")
-    public ResponseEntity<?> GetGerente() {
-      return new ResponseEntity<>(GerenteService.GetUser(), HttpStatus.OK);
-    }
-////////////////////////////////////////////////// Delete Usuarios /////////////////////////////////////////////////////////////////
-    @DeleteMapping("/DeleteOperator/{username}")
-    public ResponseEntity<?> DelOperador(@PathVariable String username) {
-      return ResponseEntity.ok(new MessageResponse(OperadoresService.delUser(username)));
-    }
+  @DeleteMapping("/DeleteMecanic/{username}")
+  public ResponseEntity<?> DelMecanico(@PathVariable String username) {
+    return ResponseEntity.ok(new MessageResponse(MecanicosService.delUser(username)));
+  }
 
-    @DeleteMapping("/DeleteMecanic/{username}")
-    public ResponseEntity<?> DelMecanico(@PathVariable String username) {
-      return ResponseEntity.ok(new MessageResponse(MecanicosService.delUser(username)));
-    }
+  @DeleteMapping("/DeleteDriver/{username}")
+  public ResponseEntity<?> DelConductor(@PathVariable String username) {
+    return ResponseEntity.ok(new MessageResponse(ConductoresService.delUser(username)));
+  }
 
-    @DeleteMapping("/DeleteDriver/{username}")
-    public ResponseEntity<?> DelConductor(@PathVariable String username) {
-      return ResponseEntity.ok(new MessageResponse(ConductoresService.delUser(username)));
-    }
+  @DeleteMapping("/DeleteManager/{username}")
+  public ResponseEntity<?> DelGerente(@PathVariable String username) {
+    return ResponseEntity.ok(new MessageResponse(GerenteService.delUser(username)));
+  }
 
-    @DeleteMapping("/DeleteManager/{username}")
-    public ResponseEntity<?> DelGerente(@PathVariable String username) {
-      return ResponseEntity.ok(new MessageResponse(GerenteService.delUser(username)));
-    }
-///////////////////////////////////////////////// Edit Usarios ////////////////////////////////////////////////////////////////////
-    @PutMapping("/UpdateOperator")
-    public ResponseEntity<?> UpdtOperador(@Valid @RequestBody Operator operadorRequest) {
-      return ResponseEntity.ok(new MessageResponse(OperadoresService.UpdateUser(operadorRequest)));
-    }
+  ///////////////////////////////////////////////// Edit Usarios
+  ///////////////////////////////////////////////// ////////////////////////////////////////////////////////////////////
+  @PutMapping("/UpdateOperator")
+  public ResponseEntity<?> UpdtOperador(@Valid @RequestBody Operator operadorRequest) {
+    return ResponseEntity.ok(new MessageResponse(OperadoresService.UpdateUser(operadorRequest)));
+  }
 
-    @PutMapping("/UpdateMecanic")
-    public ResponseEntity<?> UpdtMecanico(@Valid @RequestBody Mecanic operadorRequest) {
-      return ResponseEntity.ok(new MessageResponse(MecanicosService.UpdateUser(operadorRequest)));
-    }
+  @PutMapping("/UpdateMecanic")
+  public ResponseEntity<?> UpdtMecanico(@Valid @RequestBody Mecanic operadorRequest) {
+    return ResponseEntity.ok(new MessageResponse(MecanicosService.UpdateUser(operadorRequest)));
+  }
 
-    @PutMapping("/UpdateManager")
-    public ResponseEntity<?> UpdtConductor(@Valid @RequestBody Manager operadorRequest) {
-      return ResponseEntity.ok(new MessageResponse(GerenteService.UpdateUser(operadorRequest)));
-    }
+  @PutMapping("/UpdateManager")
+  public ResponseEntity<?> UpdtConductor(@Valid @RequestBody Manager operadorRequest) {
+    return ResponseEntity.ok(new MessageResponse(GerenteService.UpdateUser(operadorRequest)));
+  }
 
-    @PutMapping("/UpdateDriver")
-    public ResponseEntity<?> UpdtGerente(@Valid @RequestBody Driver operadorRequest) {
-      return ResponseEntity.ok(new MessageResponse(ConductoresService.UpdateUser(operadorRequest)));
-    }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  @PutMapping("/UpdateDriver")
+  public ResponseEntity<?> UpdtGerente(@Valid @RequestBody Driver operadorRequest) {
+    return ResponseEntity.ok(new MessageResponse(ConductoresService.UpdateUser(operadorRequest)));
+  }
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    @PostMapping("/AcceptUser")
-    public ResponseEntity<?> VerifClient(@Valid @RequestBody Approve clientRequest) {
-      return clienteService.AprroveCli(clientRequest);
-    }
+  @PostMapping("/AcceptUser")
+  public ResponseEntity<?> VerifyClient(@Valid @RequestBody Approve clientRequest) {
+    return clienteService.aproveClient(clientRequest);
+  }
 
-    @GetMapping("/ClientstoAccept")
-    public ResponseEntity<?> Clients() {
-      List<Client> clients = clienteService.GetClientsApprove();
-
+  @GetMapping("/ClientstoAccept")
+  public ResponseEntity<?> Clients() {
+    List<Client> clients = clienteService.GetClientsApprove();
     if (!clients.isEmpty()) {
-        return ResponseEntity.ok(clients);
+      return ResponseEntity.ok(clients);
     } else {
-        return ResponseEntity.status(HttpStatus.OK).body("No hay nuevas peticiones...");
+      return ResponseEntity.status(HttpStatus.OK).body("No hay nuevas peticiones...");
     }
-      
-    }
+  }
 
 }

@@ -2,7 +2,6 @@ package com.architechz.project.service.Clientes;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,35 +46,38 @@ public class ClienteServiceImpl implements ClienteService {
     public ResponseEntity<?> addUser(ClienteRequest user) {
 
         if (this.clienteRepository.existsByUsername(user.getUsername())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: El correo " + user.getUsername() + " ya existe en nuestras bases de datos!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error: El correo " + user.getUsername() + " ya existe en nuestras bases de datos!");
         } else {
             System.out.println(user.getNit());
             if (this.clienteRepository.existsByNit(user.getNit())) {
 
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("Error: El Nit " + user.getNit() + " ya existe en nuestras bases de datos!");
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("Error: El Nit " + user.getNit() + " ya existe en nuestras bases de datos!");
             } else {
                 String token = RandomString.make(5);
                 Set<String> rol = new HashSet<>();
                 System.out.println(token);
-                if (!user.getAdm()) {   //is the opposite of the client
+                if (!user.getAdm()) { // is the opposite of the client
 
                     rol.add("CLIADM");
                     Client cliente = new Client(user.getName(), user.getUsername(), user.getDocument(), user.getPhone(),
                             "Cliente ADM", user.getLocation(), user.getNit(), user.getCompanyName(), user.getAdm(),
-                            user.getManagerUsername(),false,token,false);                           
+                            user.getManagerUsername(), false, token, false);
                     clienteRepository.save(cliente);
                 } else {
                     rol.add("CLI");
                     Client cliente = new Client(user.getName(), user.getUsername(), user.getDocument(), user.getPhone(),
                             "Cliente Representante", user.getLocation(), user.getNit(), user.getCompanyName(),
-                            user.getAdm(), user.getManagerUsername(),true,"none",true);
+                            user.getAdm(), user.getManagerUsername(), true, "none", true);
                     clienteRepository.save(cliente);
                 }
-                email.Verify(user.getUsername(), token);//email de verificacao
-                SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), user.getPassword(), rol );
+                email.Verify(user.getUsername(), token);// email de verificacao
+                SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), user.getPassword(), rol);
                 AuthService.addUser(user2);
-            }               
-            return ResponseEntity.ok("Hola " + user.getName() + ", fue enviado un correo de verificacion al siguiente correo: " + user.getUsername());
+            }
+            return ResponseEntity.ok("Hola " + user.getName()
+                    + ", fue enviado un correo de verificacion al siguiente correo: " + user.getUsername());
         }
     }
 
@@ -153,33 +155,34 @@ public class ClienteServiceImpl implements ClienteService {
             client.setCode("verified");
             clienteRepository.save(client);
             System.out.println("email enviado a adm");
-            
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Código incorrecto, vuelvalo a intentar!");
-    }
-            
-            
-            return ResponseEntity.ok("Cliente verificado con exito"); 
+        }
+
+        return ResponseEntity.ok("Cliente verificado con exito");
     }
 
     @Override
     public String verifyPet(LoginRequest loginRequest) {
-       
-        try {
-            
-        if(clienteRepository.existsByUsername(loginRequest.getUsername()) && !clienteRepository.findByUsername(loginRequest.getUsername()).getVerified()){
 
-            //add a retry method to get a new email. 
-            System.out.println("Usuario aun no verificado, verifique el correo primero....");
-            return "1";
-      
-          }else{
-      
-            if(!clienteRepository.findByUsername(loginRequest.getUsername()).getApproved()){
-              System.out.println("Usuario aun no aprobado, una vez aprobado recibiras un correo confirmando....");
-              return "2";
-      
-            }}
+        try {
+
+            if (clienteRepository.existsByUsername(loginRequest.getUsername())
+                    && !clienteRepository.findByUsername(loginRequest.getUsername()).getVerified()) {
+
+                // add a retry method to get a new email.
+                System.out.println("Usuario aun no verificado, verifique el correo primero....");
+                return "1";
+
+            } else {
+
+                if (!clienteRepository.findByUsername(loginRequest.getUsername()).getApproved()) {
+                    System.out.println("Usuario aun no aprobado, una vez aprobado recibiras un correo confirmando....");
+                    return "2";
+
+                }
+            }
 
         } catch (Exception e) {
             return "3";
@@ -189,30 +192,21 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public ResponseEntity<?> AprroveCli(Approve code) {
-
+    public ResponseEntity<?> aproveClient(Approve code) {
         try {
-
-            if(code.getResult()=="true"){
-            Client client = clienteRepository.findByUsername(code.getUsername());
-            client.setApproved(true);
-            clienteRepository.save(client);
-            
-            return ResponseEntity.ok("Usuario Aprobado!");
-                     
-    
-            }else{
-
+            if (code.getResult() == "true") {
+                Client client = clienteRepository.findByUsername(code.getUsername());
+                client.setApproved(true);
+                clienteRepository.save(client);
+                return ResponseEntity.ok("Usuario Aprobado!");
+            } else {
                 clienteRepository.deleteByUsername(code.getUsername());
                 UserRepository.deleteByUsername(code.getUsername());
                 return ResponseEntity.ok("Usuario no aprobado y eliminado de las bases de datos!");
             }
-
-
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Imposible de aprobar a usuario!");
-    }
-            
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No fue posible aceptar el usuario");
+        }
     }
 
     @Override
@@ -223,8 +217,6 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public List<Client> GetClientsApprove() {
-        
         return clienteRepository.findByApproved(false);
-
-       }
+    }
 }
