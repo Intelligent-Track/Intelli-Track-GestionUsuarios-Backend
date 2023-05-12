@@ -1,7 +1,5 @@
 package com.architechz.project.service.EmailNotifications;
 
-//import java.io.File;
-
 import javax.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,7 +53,7 @@ public class EmailServiceImpl implements EmailService {
             mimeMessageHelper.setText(
                     "Hola, \n en el siguiente enlace podras actualizar tu contrasena: "
                             + url);
-            mimeMessageHelper.setSubject("Architechz cambio de contrasena");
+            mimeMessageHelper.setSubject("IntelliTrack cambio de contrasena");
             javaMailSender.send(mimeMessage);
             return ResponseEntity.ok("Correo para actualizar contrasena enviado con exito al usuario " + username);
         } catch (Exception e) {
@@ -75,7 +73,7 @@ public class EmailServiceImpl implements EmailService {
             mimeMessageHelper.setText(
                     "Hola, \n el codigo es: " + token + " ingresalo en la siguiente pagina "
                             + url);
-            mimeMessageHelper.setSubject("Architechz verificar correo");
+            mimeMessageHelper.setSubject("IntelliTrack verificar correo");
             javaMailSender.send(mimeMessage);
             return ResponseEntity.ok("Correo para verificar correo enviado con exito al email: " + username);
         } catch (Exception e) {

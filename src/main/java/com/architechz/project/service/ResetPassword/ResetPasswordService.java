@@ -7,7 +7,7 @@ import com.architechz.project.payload.Password.PasswordChange;
 public interface ResetPasswordService {
     
     public ResponseEntity<?> PasswordUser(PasswordChange Password); 
-    public ResponseEntity<?> ResetUser(PasswordChange Password); 
+    public ResponseEntity<?> ResetUser(PasswordChange Password,String token); 
 
     
 }
