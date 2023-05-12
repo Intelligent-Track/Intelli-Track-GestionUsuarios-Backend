@@ -34,22 +34,19 @@ public class AuthServiceImpl implements AuthService {
   JwtUtils jwtUtils;
 
   @Override
-  public String addUser(SignupRequest userRequest, Boolean passwordEncripted) {
+  public String addUser(SignupRequest userRequest) {
 
     /////////////////////////////////////////////////////
     System.out.println(userRequest.getName());
     System.out.println(userRequest.getPassword());
-    if (userRepository.existsByUsername(userRequest.getUsername()) && !passwordEncripted) {
+    if (userRepository.existsByUsername(userRequest.getUsername()) ) {
       return "Error: El correo " + userRequest.getUsername() + " ya existe en nuestras bases de datos!";
     }
 
-    String newPassword = userRequest.getPassword();
+   
     // Create new user's account
-    if (!passwordEncripted) {
-      newPassword = encoder.encode(userRequest.getPassword());
-    }
     User user = new User(userRequest.getUsername(),
-        newPassword,
+        encoder.encode(userRequest.getPassword()),
         userRequest.getName());
 
     Set<String> strRoles = userRequest.getRole();

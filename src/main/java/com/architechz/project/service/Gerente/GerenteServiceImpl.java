@@ -56,7 +56,7 @@ public class GerenteServiceImpl implements GerenteService {
                 String token = RandomString.make(10);
 
                 SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), token, rol);
-                AuthService.addUser(user2, false);
+                AuthService.addUser(user2);
 
             } catch (Exception e) {
                 return e.toString();

@@ -4,6 +4,6 @@ import com.architechz.project.payload.request.SignupRequest;
 
 public interface AuthService {
 
-    public abstract String addUser(SignupRequest user, Boolean passwordEncripted);
+    public abstract String addUser(SignupRequest user);
 
 }

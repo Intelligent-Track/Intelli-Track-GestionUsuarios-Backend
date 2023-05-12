@@ -23,11 +23,13 @@ import com.architechz.project.payload.request.LoginRequest;
 import com.architechz.project.payload.request.SignupRequest;
 import com.architechz.project.payload.response.JwtResponse;
 import com.architechz.project.payload.response.MessageResponse;
+import com.architechz.project.repository.ClienteRepository;
 import com.architechz.project.repository.RoleRepository;
 import com.architechz.project.repository.UserRepository;
 import com.architechz.project.security.jwt.JwtUtils;
 import com.architechz.project.security.services.UserDetailsImpl;
 import com.architechz.project.service.AuthService.AuthService;
+import com.architechz.project.service.Clientes.ClienteService;
 import com.architechz.project.service.ResetPassword.ResetPasswordService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -41,7 +43,13 @@ public class AuthController {
   UserRepository userRepository;
 
   @Autowired
+  ClienteRepository clientRepository;
+
+  @Autowired
   RoleRepository roleRepository;
+
+  @Autowired
+  ClienteService clienteService;
 
   @Autowired
   PasswordEncoder encoder;
@@ -57,6 +65,14 @@ public class AuthController {
 
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+
+    if(clienteService.verifyPet(loginRequest) == "1"){
+      return ResponseEntity.badRequest().body("Usuario aun no verificado, verifique el correo primero....");
+    }else{
+      if(clienteService.verifyPet(loginRequest) == "2"){
+        return ResponseEntity.badRequest().body("Usuario aun no aprobado, una vez aprobado recibiras un correo confirmando....");
+      }
+    }
 
     Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -78,7 +94,7 @@ public class AuthController {
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-    return ResponseEntity.ok(new MessageResponse(authService.addUser(signUpRequest, false)));
+    return ResponseEntity.ok(new MessageResponse(authService.addUser(signUpRequest)));
   }
 
   @PostMapping("/forgotPassword")
