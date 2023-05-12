@@ -55,7 +55,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
 
         } catch (Exception e) {
             
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body( "Fue imposible mandar el correo en este momento");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( "Fue imposible mandar el correo en este momento");
 
         }
         
@@ -75,7 +75,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
                 userRepository.save(existingUser);
                 System.out.println(Password.getPassword());
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body( "Fue imposible cambiar la contrasena en este momento");// handle the case where the user does not exist
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( "Fue imposible cambiar la contrasena en este momento");// handle the case where the user does not exist
             }
 
         } catch (Exception e) {

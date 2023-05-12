@@ -20,7 +20,7 @@ import com.architechz.project.service.RegisterRequests.RegisterRequestService;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/reg")
-public class RegisterControler {
+public class RegisterController {
 
     @Autowired
     RegisterRequestService registerRequestService;
