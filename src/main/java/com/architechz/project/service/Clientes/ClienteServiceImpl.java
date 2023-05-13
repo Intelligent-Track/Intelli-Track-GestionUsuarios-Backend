@@ -85,14 +85,13 @@ public class ClienteServiceImpl implements ClienteService {
     public String addClient(Client client) {
         String messagge;
         if (this.clienteRepository.existsByUsername(client.getUsername())) {
-
             return "Error: El correo " + client.getUsername() + " ya existe en nuestras bases de datos!";
         } else {
             System.out.println(client.getId());
             clienteRepository.save(client);
             messagge = "Bienvenido, usted a sido registrado como un Cliente representante de la empresa"
                     + client.getCompanyName();
-            emailService.sentMessagge(client.getUsername(), messagge);
+            emailService.sendMessagge(client.getUsername(), messagge);
 
             return "El usuario con correo " + client.getUsername()
                     + " fue añadido como Cliente Representante exitosamente!";
@@ -192,16 +191,16 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public ResponseEntity<?> aproveClient(Approve code) {
+    public ResponseEntity<?> approveClient(Approve code) {
         try {
-            if (code.getResult() == "true") {
+            if (code.isAccepted()) {
                 Client client = clienteRepository.findByUsername(code.getUsername());
                 client.setApproved(true);
-                clienteRepository.save(client);
+                this.clienteRepository.save(client);
                 return ResponseEntity.ok("Usuario Aprobado!");
             } else {
-                clienteRepository.deleteByUsername(code.getUsername());
-                UserRepository.deleteByUsername(code.getUsername());
+                this.clienteRepository.deleteByUsername(code.getUsername());
+                this.UserRepository.deleteByUsername(code.getUsername());
                 return ResponseEntity.ok("Usuario no aprobado y eliminado de las bases de datos!");
             }
         } catch (Exception e) {

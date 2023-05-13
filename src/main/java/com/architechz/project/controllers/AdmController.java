@@ -162,7 +162,7 @@ public class AdmController {
 
   @PostMapping("/AcceptUser")
   public ResponseEntity<?> VerifyClient(@Valid @RequestBody Approve clientRequest) {
-    return clienteService.aproveClient(clientRequest);
+    return clienteService.approveClient(clientRequest);
   }
 
   @GetMapping("/ClientstoAccept")
