@@ -82,12 +82,13 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public ResponseEntity<?> sendMessagge(String username, String messagge) {
+    public ResponseEntity<?> sendMessagge(String username, String subject, String messagge) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper;
         try {
             mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
             mimeMessageHelper.setTo(username);
+            mimeMessageHelper.setSubject(subject);
             mimeMessageHelper.setText(messagge);
             javaMailSender.send(mimeMessage);
             return ResponseEntity.ok("Mensaje enviado por correo con exito al usuario con correo: " + username);

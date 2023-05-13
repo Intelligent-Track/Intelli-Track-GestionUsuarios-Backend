@@ -91,7 +91,7 @@ public class ClienteServiceImpl implements ClienteService {
             clienteRepository.save(client);
             messagge = "Bienvenido, usted a sido registrado como un Cliente representante de la empresa"
                     + client.getCompanyName();
-            emailService.sendMessagge(client.getUsername(), messagge);
+            emailService.sendMessagge(client.getUsername(), "Te damos la bienvenida a IntelliTrack", messagge);
 
             return "El usuario con correo " + client.getUsername()
                     + " fue añadido como Cliente Representante exitosamente!";
