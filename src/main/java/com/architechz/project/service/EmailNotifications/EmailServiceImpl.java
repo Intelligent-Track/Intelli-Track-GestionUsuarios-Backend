@@ -33,7 +33,7 @@ public class EmailServiceImpl implements EmailService {
                             + url + " : \n Username: " + NewuserNotification.getUsername() + "\n Contrasena: "
                             + NewuserNotification.getPassword());
             mimeMessageHelper.setSubject("Bienvenido a IntelliTrack");
-            // javaMailSender.send(mimeMessage);
+            javaMailSender.send(mimeMessage);
             return ResponseEntity.ok("Correo enviado con exito al usuario " + NewuserNotification.getUsername());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -82,13 +82,13 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public ResponseEntity<?> sentMessagge(String username, String messagge) {
+    public ResponseEntity<?> sendMessagge(String username, String subject, String messagge) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper;
         try {
             mimeMessageHelper = new MimeMessageHelper(mimeMessage, false);
             mimeMessageHelper.setTo(username);
-
+            mimeMessageHelper.setSubject(subject);
             mimeMessageHelper.setText(messagge);
             javaMailSender.send(mimeMessage);
             return ResponseEntity.ok("Mensaje enviado por correo con exito al usuario con correo: " + username);

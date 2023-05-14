@@ -27,10 +27,10 @@ public interface ClienteService {
 
     public List<Client> GetClientsApprove();
 
-    public ResponseEntity<?> verifyClient(String code,String username);
+    public ResponseEntity<?> verifyClient(String code, String username);
 
     public String verifyPet(LoginRequest loginRequest);
 
-    public ResponseEntity<?> aproveClient(Approve code);
+    public ResponseEntity<?> approveClient(Approve code);
 
 }
