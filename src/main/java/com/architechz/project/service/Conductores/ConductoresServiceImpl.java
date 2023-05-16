@@ -1,5 +1,6 @@
 package com.architechz.project.service.Conductores;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -82,6 +83,18 @@ public class ConductoresServiceImpl implements ConductoresService {
     @Override
     public List<Driver> GetUser() {
         return ConductorRepository.findAll();
+    }
+
+    @Override
+    public List<Driver> GetUsersByName(String name) {
+        List<Driver> drivers = ConductorRepository.findAll();
+        List<Driver> searchedDrivers = new ArrayList<>();
+        for(Driver driver : drivers) {
+            if(driver.getName().toLowerCase().contains(name.toLowerCase())) {
+                searchedDrivers.add(driver);
+            }
+        }
+        return searchedDrivers;
     }
 
     @Transactional

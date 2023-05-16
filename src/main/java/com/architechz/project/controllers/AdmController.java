@@ -100,9 +100,19 @@ public class AdmController {
     return new ResponseEntity<>(OperadoresService.GetUser(), HttpStatus.OK);
   }
 
+  @GetMapping("/GetOperators/{name}")
+  public ResponseEntity<?> GetOperatorsByName(@PathVariable String name) {
+    return new ResponseEntity<>(OperadoresService.GetUsersByName(name), HttpStatus.OK);
+  }
+
   @GetMapping("/GetMecanics")
   public ResponseEntity<?> GetMecanico() {
     return new ResponseEntity<>(MecanicosService.GetUser(), HttpStatus.OK);
+  }
+
+  @GetMapping("/GetMecanics/{name}")
+  public ResponseEntity<?> GetMecanicsByName(@PathVariable String name) {
+    return new ResponseEntity<>(MecanicosService.GetUsersByName(name), HttpStatus.OK);
   }
 
   @GetMapping("/GetDrivers")
@@ -110,9 +120,19 @@ public class AdmController {
     return new ResponseEntity<>(ConductoresService.GetUser(), HttpStatus.OK);
   }
 
+  @GetMapping("/GetDrivers/{name}")
+  public ResponseEntity<?> GetDriversByName(@PathVariable String name) {
+    return new ResponseEntity<>(ConductoresService.GetUsersByName(name), HttpStatus.OK);
+  }
+
   @GetMapping("/GetManager")
   public ResponseEntity<?> GetGerente() {
     return new ResponseEntity<>(GerenteService.GetUser(), HttpStatus.OK);
+  }
+
+  @GetMapping("/GetManagers/{name}")
+  public ResponseEntity<?> GetManagersByName(@PathVariable String name) {
+    return new ResponseEntity<>(GerenteService.GetUsersByName(name), HttpStatus.OK);
   }
 
   ////////////////////////////////////////////////// Delete Usuarios

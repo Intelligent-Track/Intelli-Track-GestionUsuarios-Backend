@@ -1,5 +1,6 @@
 package com.architechz.project.service.Operadores;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -66,6 +67,18 @@ public class OperadoresServiceImpl implements OperadoresService {
     @Override
     public List<Operator> GetUser() {
         return OperadorRepository.findAll();
+    }
+
+    @Override
+    public List<Operator> GetUsersByName(String name) {
+        List<Operator> operators = OperadorRepository.findAll();
+        List<Operator> searchedOperators = new ArrayList<>();
+        for(Operator operator : operators) {
+            if(operator.getName().toLowerCase().contains(name.toLowerCase())) {
+                searchedOperators.add(operator);
+            }
+        }
+        return searchedOperators;
     }
 
     @Transactional

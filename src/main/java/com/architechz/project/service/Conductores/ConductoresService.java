@@ -10,6 +10,7 @@ public interface ConductoresService {
     public String addUser(ConductorRequest user);
     public Driver getByUsername(String username);
     public List<Driver> GetUser();
+    public List<Driver> GetUsersByName(String name);
     public String delUser(String username);
     public String UpdateUser(Driver user);
     public String updateDriverFiles(byte[] license, byte[] mecReview, Long id);
