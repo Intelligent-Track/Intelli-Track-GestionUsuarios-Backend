@@ -38,6 +38,12 @@ public class Client {
 
 	private Boolean adm;
 
+	private Boolean verified;
+
+	private String code;
+
+	private Boolean approved;
+
 	@Size(max = 50)
 	@Email
 	private String managerUsername;
@@ -45,10 +51,10 @@ public class Client {
 	public Client() {
 	}
 
-	public Client(String name, @Size(max = 50) @Email String username,
-			Long document, Long phone, String job, String location, String nit,
-			String companyName, Boolean adm, @Size(max = 50) @Email String managerUsername) {
-
+	public Client(  String name,  @Size(max = 50) @Email String username,
+			 Long document,  Long phone,  String job,  String location, String nit,
+			String companyName, Boolean adm, @Size(max = 50) @Email String managerUsername,Boolean verified,String code, Boolean approved) {
+		
 		this.name = name;
 		this.username = username;
 		this.document = document;
@@ -59,22 +65,9 @@ public class Client {
 		this.companyName = companyName;
 		this.adm = adm;
 		this.managerUsername = managerUsername;
-	}
-
-	public Client(Long id, @NotBlank String name, @NotBlank @Size(max = 50) @Email String username, Long document,
-			Long phone, String job, String location, String nit, String companyName, Boolean adm,
-			@Size(max = 50) @Email String managerUsername) {
-		this.id = id;
-		this.name = name;
-		this.username = username;
-		this.document = document;
-		this.phone = phone;
-		this.job = job;
-		this.location = location;
-		this.nit = nit;
-		this.companyName = companyName;
-		this.adm = adm;
-		this.managerUsername = managerUsername;
+		this.verified = verified;
+		this.code = code;
+		this.approved = approved;
 	}
 
 	public Long getId() {
@@ -165,4 +158,29 @@ public class Client {
 		this.document = document;
 	}
 
+	public Boolean getVerified() {
+		return verified;
+	}
+
+	public void setVerified(Boolean verified) {
+		this.verified = verified;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public Boolean getApproved() {
+		return approved;
+	}
+
+	public void setApproved(Boolean approved) {
+		this.approved = approved;
+	}
+
+	
 }

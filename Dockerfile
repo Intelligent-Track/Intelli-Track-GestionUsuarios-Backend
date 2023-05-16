@@ -16,5 +16,9 @@ ARG DEPENDENCY=/workspace/app/target/dependency
 COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
 COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
+ARG MAIL_USERNAME
+ARG MAIL_TOKEN
 ENV SPRING_PROFILES_ACTIVE=prod
+ENV MAIL_USERNAME=$MAIL_USERNAME
+ENV MAIL_TOKEN=$MAIL_TOKEN
 ENTRYPOINT ["java", "-cp", "app:app/lib/*", "com.architechz.project.ProjectApplication"]

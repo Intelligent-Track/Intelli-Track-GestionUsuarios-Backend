@@ -29,3 +29,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/ius-dev:latest
+          build-args: |
+            MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
+            MAIL_TOKEN=${{ secrets.MAIL_TOKEN }}

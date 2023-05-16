@@ -1,5 +1,6 @@
 package com.architechz.project.service.Conductores;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -14,6 +15,7 @@ import com.architechz.project.payload.RegisterRequests.ConductorRequest;
 import com.architechz.project.repository.*;
 import com.architechz.project.models.Driver;
 import com.architechz.project.service.AuthService.*;
+import com.architechz.project.service.EmailNotifications.EmailService;
 
 import net.bytebuddy.utility.RandomString;
 
@@ -30,6 +32,9 @@ public class ConductoresServiceImpl implements ConductoresService {
 
     @Autowired
     UserRepository UserRepository;
+
+    @Autowired
+    EmailService emailService;
 
     @Override
     public String addUser(ConductorRequest user) {
@@ -53,8 +58,14 @@ public class ConductoresServiceImpl implements ConductoresService {
 
                 String token = RandomString.make(10);
 
+                String message = "Bienvenido conductor " + user.getName() + " a IntelliTrack!\n\n" +
+                        "Por medio de este correo le enviamos la contraseña por la cual podrá acceder al sistema: "
+                        + token;
+
+                this.emailService.sendMessagge(user.getUsername(), "Te damos la bienvenida a IntelliTrack", message);
+
                 SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), token, rol);
-                AuthService.addUser(user2, false);
+                AuthService.addUser(user2);
 
             } catch (Exception e) {
                 return e.toString();
@@ -72,6 +83,18 @@ public class ConductoresServiceImpl implements ConductoresService {
     @Override
     public List<Driver> GetUser() {
         return ConductorRepository.findAll();
+    }
+
+    @Override
+    public List<Driver> GetUsersByName(String name) {
+        List<Driver> drivers = ConductorRepository.findAll();
+        List<Driver> searchedDrivers = new ArrayList<>();
+        for(Driver driver : drivers) {
+            if(driver.getName().toLowerCase().contains(name.toLowerCase())) {
+                searchedDrivers.add(driver);
+            }
+        }
+        return searchedDrivers;
     }
 
     @Transactional

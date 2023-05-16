@@ -1,5 +1,6 @@
 package com.architechz.project.service.Gerente;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,7 +57,7 @@ public class GerenteServiceImpl implements GerenteService {
                 String token = RandomString.make(10);
 
                 SignupRequest user2 = new SignupRequest(user.getName(), user.getUsername(), token, rol);
-                AuthService.addUser(user2, false);
+                AuthService.addUser(user2);
 
             } catch (Exception e) {
                 return e.toString();
@@ -70,6 +71,18 @@ public class GerenteServiceImpl implements GerenteService {
     @Override
     public List<Manager> GetUser() {
         return GerenteRepository.findAll();
+    }
+
+    @Override
+    public List<Manager> GetUsersByName(String name) {
+        List<Manager> managers = GerenteRepository.findAll();
+        List<Manager> searchedManagers = new ArrayList<>();
+        for(Manager manager : managers) {
+            if(manager.getName().toLowerCase().contains(name.toLowerCase())) {
+                searchedManagers.add(manager);
+            }
+        }
+        return searchedManagers;
     }
 
     @Transactional

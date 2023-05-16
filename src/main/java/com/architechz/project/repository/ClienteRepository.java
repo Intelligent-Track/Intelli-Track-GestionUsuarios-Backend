@@ -1,11 +1,11 @@
 package com.architechz.project.repository;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.architechz.project.models.*;
+import com.architechz.project.models.Client;
 
 @Repository
 public interface ClienteRepository extends JpaRepository<Client, Long> {
@@ -16,5 +16,10 @@ public interface ClienteRepository extends JpaRepository<Client, Long> {
 
     String deleteByUsername(String username);
 
-    Optional<Client> findByUsername(String username);
+    Client findByUsername(String username);
+
+    Client findByCode(String code);
+
+    List<Client> findByApproved(Boolean status);
+
 }
