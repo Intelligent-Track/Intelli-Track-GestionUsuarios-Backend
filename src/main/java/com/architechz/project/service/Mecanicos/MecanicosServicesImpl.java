@@ -1,5 +1,6 @@
 package com.architechz.project.service.Mecanicos;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,6 +61,18 @@ public class MecanicosServicesImpl implements MecanicosService {
     @Override
     public List<Mecanic> GetUser() {
         return MecanicoRepository.findAll();
+    }
+
+    @Override
+    public List<Mecanic> GetUsersByName(String name) {
+        List<Mecanic> mecanics = MecanicoRepository.findAll();
+        List<Mecanic> searchedMecanics = new ArrayList<>();
+        for(Mecanic mecanic : mecanics) {
+            if(mecanic.getName().toLowerCase().contains(name.toLowerCase())) {
+                searchedMecanics.add(mecanic);
+            }
+        }
+        return searchedMecanics;
     }
 
     @Transactional
